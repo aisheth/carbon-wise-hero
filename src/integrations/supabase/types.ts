@@ -302,7 +302,30 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_leaderboard: {
+        Row: {
+          avatar_url: string | null
+          current_streak: number | null
+          display_name: string | null
+          id: string | null
+          points: number | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          current_streak?: number | null
+          display_name?: string | null
+          id?: string | null
+          points?: number | null
+        }
+        Update: {
+          avatar_url?: string | null
+          current_streak?: number | null
+          display_name?: string | null
+          id?: string | null
+          points?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
