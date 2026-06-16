@@ -86,6 +86,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "AI-powered carbon footprint tracking and coaching." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Carbon Coach" },
+      { name: "twitter:description", content: "AI-powered carbon footprint tracking and coaching." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f0629b15-98bc-46b2-a58e-ab03d654f82c/id-preview-993a845b--d40e1998-5ce7-440b-9a41-d5c139b5e8c6.lovable.app-1781614376245.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f0629b15-98bc-46b2-a58e-ab03d654f82c/id-preview-993a845b--d40e1998-5ce7-440b-9a41-d5c139b5e8c6.lovable.app-1781614376245.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
