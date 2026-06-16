@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parseReceiptText, totalReceiptImpact } from "@/lib/receipt";
+import { parseReceiptText, totalReceiptImpact } from "../../src/lib/receipt";
 
 describe("parseReceiptText", () => {
   it("identifies common grocery items", () => {

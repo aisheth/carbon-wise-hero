@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { generateWeeklyMissions, weekStart, isoDate, MISSION_LIBRARY } from "@/lib/missions";
+import { generateWeeklyMissions, weekStart, isoDate, MISSION_LIBRARY } from "../../src/lib/missions";
 
 describe("weekStart", () => {
   it("returns a Monday", () => {

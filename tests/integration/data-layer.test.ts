@@ -13,7 +13,7 @@ const orderMock = vi.fn().mockReturnThis();
 const limitMock = vi.fn().mockReturnThis();
 const maybeSingleMock = vi.fn().mockResolvedValue({ data: null, error: null });
 
-vi.mock("@/integrations/supabase/client", () => ({
+vi.mock("../../src/integrations/supabase/client", () => ({
   supabase: {
     auth: { getUser: vi.fn().mockResolvedValue({ data: { user: { id: "u_1" } } }) },
     from: vi.fn(() => ({
@@ -34,8 +34,8 @@ beforeEach(() => {
 
 describe("assessment write path", () => {
   it("inserts an assessment row with computed fields", async () => {
-    const { supabase } = await import("@/integrations/supabase/client");
-    const { assess } = await import("@/lib/carbon");
+    const { supabase } = await import("../../src/integrations/supabase/client");
+    const { assess } = await import("../../src/lib/carbon");
     const inputs = {
       carKmPerWeek: 100, carType: "gasoline" as const, transitKmPerWeek: 0, flightHoursPerYear: 2,
       electricityKwhPerMonth: 300, renewableShare: 0.2, diet: "omnivore" as const,
@@ -56,7 +56,7 @@ describe("assessment write path", () => {
 
 describe("missions completion flow", () => {
   it("toggles a mission as completed", async () => {
-    const { supabase } = await import("@/integrations/supabase/client");
+    const { supabase } = await import("../../src/integrations/supabase/client");
     await supabase.from("missions").update({ completed: true, completed_at: new Date().toISOString() }).eq("id", "m_1");
     expect(updateMock).toHaveBeenCalled();
     expect(eqMock).toHaveBeenCalledWith("id", "m_1");

@@ -8,7 +8,7 @@ import {
   round1,
   simulateChange,
   type AssessmentInputs,
-} from "@/lib/carbon";
+} from "../../src/lib/carbon";
 
 const lowImpact: AssessmentInputs = {
   carKmPerWeek: 0, carType: "none", transitKmPerWeek: 30, flightHoursPerYear: 0,
