@@ -33,7 +33,7 @@ function ScannerPage() {
     const { error } = await supabase.from("receipts").insert({
       user_id: user.id,
       ocr_text: text,
-      items: items as unknown as Record<string, unknown>[],
+      items: items as never,
       estimated_co2_kg: total,
     });
     if (error) toast.error(error.message);
