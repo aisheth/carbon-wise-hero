@@ -14,7 +14,292 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      assessments: {
+        Row: {
+          created_at: string
+          electricity_kg: number
+          food_kg: number
+          id: string
+          inputs: Json
+          score: number
+          shopping_kg: number
+          total_kg: number
+          transport_kg: number
+          user_id: string
+          waste_kg: number
+        }
+        Insert: {
+          created_at?: string
+          electricity_kg?: number
+          food_kg?: number
+          id?: string
+          inputs: Json
+          score?: number
+          shopping_kg?: number
+          total_kg?: number
+          transport_kg?: number
+          user_id: string
+          waste_kg?: number
+        }
+        Update: {
+          created_at?: string
+          electricity_kg?: number
+          food_kg?: number
+          id?: string
+          inputs?: Json
+          score?: number
+          shopping_kg?: number
+          total_kg?: number
+          transport_kg?: number
+          user_id?: string
+          waste_kg?: number
+        }
+        Relationships: []
+      }
+      badges: {
+        Row: {
+          description: string
+          icon: string
+          id: string
+          name: string
+          threshold: number
+        }
+        Insert: {
+          description: string
+          icon: string
+          id: string
+          name: string
+          threshold?: number
+        }
+        Update: {
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          threshold?: number
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          thread_id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          thread_id: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          thread_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "chat_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_threads: {
+        Row: {
+          created_at: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      emissions_log: {
+        Row: {
+          category: string | null
+          created_at: string
+          id: string
+          month: string
+          total_kg: number
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          month: string
+          total_kg: number
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          month?: string
+          total_kg?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      missions: {
+        Row: {
+          category: string
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          estimated_co2_kg: number
+          id: string
+          points: number
+          title: string
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          category: string
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          estimated_co2_kg?: number
+          id?: string
+          points?: number
+          title: string
+          user_id: string
+          week_start: string
+        }
+        Update: {
+          category?: string
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          estimated_co2_kg?: number
+          id?: string
+          points?: number
+          title?: string
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          current_streak: number
+          display_name: string | null
+          id: string
+          last_active_date: string | null
+          longest_streak: number
+          points: number
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          current_streak?: number
+          display_name?: string | null
+          id: string
+          last_active_date?: string | null
+          longest_streak?: number
+          points?: number
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          current_streak?: number
+          display_name?: string | null
+          id?: string
+          last_active_date?: string | null
+          longest_streak?: number
+          points?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      receipts: {
+        Row: {
+          created_at: string
+          estimated_co2_kg: number
+          id: string
+          image_url: string | null
+          items: Json | null
+          ocr_text: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          estimated_co2_kg?: number
+          id?: string
+          image_url?: string | null
+          items?: Json | null
+          ocr_text?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          estimated_co2_kg?: number
+          id?: string
+          image_url?: string | null
+          items?: Json | null
+          ocr_text?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_badges: {
+        Row: {
+          badge_id: string
+          earned_at: string
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          earned_at?: string
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          earned_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
