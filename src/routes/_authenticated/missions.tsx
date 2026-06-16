@@ -1,0 +1,111 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { generateWeeklyMissions, isoDate, weekStart } from "@/lib/missions";
+import { toast } from "sonner";
+import { CheckCircle2, Target } from "lucide-react";
+
+export const Route = createFileRoute("/_authenticated/missions")({
+  head: () => ({ meta: [{ title: "Weekly Missions — Carbon Coach" }] }),
+  component: MissionsPage,
+});
+
+function MissionsPage() {
+  const qc = useQueryClient();
+  const ws = isoDate(weekStart());
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["missions", ws],
+    queryFn: async () => {
+      const { data: missions } = await supabase.from("missions").select("*").eq("week_start", ws).order("created_at");
+      const { data: latest } = await supabase.from("assessments").select("transport_kg,electricity_kg,food_kg,shopping_kg,waste_kg").order("created_at", { ascending: false }).limit(1).maybeSingle();
+      return { missions: missions ?? [], latest };
+    },
+  });
+
+  async function generate() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    if (!data?.latest) { toast.error("Take the assessment first"); return; }
+    const picks = generateWeeklyMissions({
+      transport: Number(data.latest.transport_kg),
+      electricity: Number(data.latest.electricity_kg),
+      food: Number(data.latest.food_kg),
+      shopping: Number(data.latest.shopping_kg),
+      waste: Number(data.latest.waste_kg),
+    }, ws);
+    const { error } = await supabase.from("missions").insert(
+      picks.map((m) => ({
+        user_id: user.id, title: m.title, description: m.description,
+        category: m.category, estimated_co2_kg: m.estimatedCo2Kg, points: m.points, week_start: ws,
+      })),
+    );
+    if (error) toast.error(error.message);
+    else { toast.success("New missions ready!"); qc.invalidateQueries({ queryKey: ["missions", ws] }); }
+  }
+
+  async function toggle(id: string, completed: boolean, points: number) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { error } = await supabase.from("missions").update({
+      completed: !completed,
+      completed_at: !completed ? new Date().toISOString() : null,
+    }).eq("id", id);
+    if (error) { toast.error(error.message); return; }
+
+    if (!completed) {
+      const { data: prof } = await supabase.from("profiles").select("points").eq("id", user.id).maybeSingle();
+      await supabase.from("profiles").update({ points: (prof?.points ?? 0) + points, last_active_date: new Date().toISOString().slice(0, 10) }).eq("id", user.id);
+      toast.success(`+${points} eco points`);
+    }
+    qc.invalidateQueries();
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="text-3xl font-semibold">Weekly Eco Missions</h1>
+          <p className="text-muted-foreground text-sm">Week of {ws}</p>
+        </div>
+        {data?.missions.length === 0 && <Button onClick={generate}>Generate this week's missions</Button>}
+      </div>
+
+      {isLoading ? (
+        <Card><CardContent className="py-10 text-center text-muted-foreground">Loading…</CardContent></Card>
+      ) : data?.missions.length === 0 ? (
+        <Card><CardContent className="py-16 text-center">
+          <Target className="size-10 mx-auto text-primary mb-3" />
+          <h3 className="font-display font-semibold">No missions yet</h3>
+          <p className="text-sm text-muted-foreground">Generate three personalized goals for the week.</p>
+        </CardContent></Card>
+      ) : (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {data?.missions.map((m) => (
+            <Card key={m.id} className={m.completed ? "opacity-70" : ""}>
+              <CardHeader className="flex flex-row items-start justify-between gap-2">
+                <Badge variant="secondary" className="capitalize">{m.category}</Badge>
+                <Checkbox checked={m.completed} onCheckedChange={() => toggle(m.id, m.completed, m.points)} aria-label="Mark complete" />
+              </CardHeader>
+              <CardContent>
+                <CardTitle className="text-base flex items-start gap-2">
+                  {m.completed && <CheckCircle2 className="size-4 text-success mt-0.5" />}
+                  {m.title}
+                </CardTitle>
+                <p className="text-sm text-muted-foreground mt-2">{m.description}</p>
+                <div className="mt-4 flex items-center justify-between text-xs">
+                  <span className="text-primary font-medium">~{Number(m.estimated_co2_kg)} kg CO₂ saved</span>
+                  <span className="text-muted-foreground">+{m.points} pts</span>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
