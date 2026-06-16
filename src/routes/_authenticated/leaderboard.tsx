@@ -19,7 +19,8 @@ function LeaderboardPage() {
     queryKey: ["leaderboard"],
     queryFn: async () => {
       const [{ data: leaderboard }, { data: badges }, { data: { user } }] = await Promise.all([
-        supabase.from("profiles").select("id,display_name,avatar_url,points,current_streak").order("points", { ascending: false }).limit(20),
+        // Use security-definer RPC that returns only safe leaderboard columns
+        (supabase as unknown as { rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: Array<{ id: string; display_name: string | null; avatar_url: string | null; points: number; current_streak: number }> | null }> }).rpc("get_leaderboard", { _limit: 20 }),
         supabase.from("badges").select("*"),
         supabase.auth.getUser(),
       ]);
