@@ -302,33 +302,19 @@ export type Database = {
       }
     }
     Views: {
-      public_leaderboard: {
-        Row: {
-          avatar_url: string | null
-          current_streak: number | null
-          display_name: string | null
-          id: string | null
-          points: number | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          current_streak?: number | null
-          display_name?: string | null
-          id?: string | null
-          points?: number | null
-        }
-        Update: {
-          avatar_url?: string | null
-          current_streak?: number | null
-          display_name?: string | null
-          id?: string | null
-          points?: number | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_leaderboard: {
+        Args: { _limit?: number }
+        Returns: {
+          avatar_url: string
+          current_streak: number
+          display_name: string
+          id: string
+          points: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
