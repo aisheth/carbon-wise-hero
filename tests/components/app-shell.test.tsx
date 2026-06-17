@@ -7,7 +7,17 @@ const locationState = vi.hoisted(() => ({ pathname: "/dashboard" }));
 const signOutMock = vi.hoisted(() => vi.fn().mockResolvedValue({ error: null }));
 
 vi.mock("@tanstack/react-router", () => ({
-  Link: ({ to, children, className, ...rest }: any) => (
+  Link: ({
+    to,
+    children,
+    className,
+    ...rest
+  }: {
+    to: string;
+    children: unknown;
+    className?: string;
+    [k: string]: unknown;
+  }) => (
     <a href={to} className={className} {...rest}>
       {children}
     </a>
@@ -19,7 +29,6 @@ vi.mock("@tanstack/react-router", () => ({
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: { auth: { signOut: signOutMock } },
 }));
-
 
 import { AppShell } from "../../src/components/app-shell";
 
@@ -67,7 +76,9 @@ describe("AppShell", () => {
     renderShell();
     const missionsLinks = screen.getAllByText("Missions");
     // Find the parent <a> with active style
-    const active = missionsLinks.find((el) => el.closest("a")?.className.includes("bg-primary-soft"));
+    const active = missionsLinks.find((el) =>
+      el.closest("a")?.className.includes("bg-primary-soft"),
+    );
     expect(active).toBeTruthy();
   });
 
@@ -76,9 +87,6 @@ describe("AppShell", () => {
     const buttons = screen.getAllByRole("button", { name: /sign out/i });
     fireEvent.click(buttons[0]);
     await waitFor(() => expect(signOutMock).toHaveBeenCalled());
-    await waitFor(() =>
-      expect(navigateMock).toHaveBeenCalledWith({ to: "/auth", replace: true }),
-    );
+    await waitFor(() => expect(navigateMock).toHaveBeenCalledWith({ to: "/auth", replace: true }));
   });
 });
-

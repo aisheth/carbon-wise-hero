@@ -23,8 +23,8 @@ describe("error-capture", () => {
   it("captures unhandled rejections", () => {
     const reason = new Error("rejected");
     // PromiseRejectionEvent isn't constructable in jsdom; fake it
-    const evt: any = new Event("unhandledrejection");
-    (evt as any).reason = reason;
+    const evt = new Event("unhandledrejection") as Event & { reason: unknown };
+    evt.reason = reason;
     globalThis.dispatchEvent(evt);
     expect(consumeLastCapturedError()).toBe(reason);
   });

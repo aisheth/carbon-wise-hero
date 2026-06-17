@@ -6,11 +6,11 @@ describe("reportLovableError", () => {
 
   beforeEach(() => {
     captureSpy.mockClear();
-    (window as any).__lovableEvents = { captureException: captureSpy };
+    window.__lovableEvents = { captureException: captureSpy };
   });
 
   afterEach(() => {
-    delete (window as any).__lovableEvents;
+    delete window.__lovableEvents;
   });
 
   it("forwards the error with route and source context", () => {
@@ -32,12 +32,12 @@ describe("reportLovableError", () => {
   });
 
   it("is a no-op when __lovableEvents is missing", () => {
-    delete (window as any).__lovableEvents;
+    delete window.__lovableEvents;
     expect(() => reportLovableError(new Error("x"))).not.toThrow();
   });
 
   it("is a no-op when captureException is missing", () => {
-    (window as any).__lovableEvents = {};
+    window.__lovableEvents = {};
     expect(() => reportLovableError(new Error("x"))).not.toThrow();
   });
 
