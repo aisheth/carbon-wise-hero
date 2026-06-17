@@ -4,9 +4,19 @@ import { TopRecommendations } from "../../src/components/top-recommendations";
 import type { Recommendation } from "../../src/lib/carbon";
 
 const recs: Recommendation[] = [
-  { category: "transport", title: "Bike to work", detail: "swap car commute", estimatedSavingKg: 50 },
+  {
+    category: "transport",
+    title: "Bike to work",
+    detail: "swap car commute",
+    estimatedSavingKg: 50,
+  },
   { category: "food", title: "Plant-based Mondays", detail: "skip meat", estimatedSavingKg: 20 },
-  { category: "electricity", title: "LED bulbs", detail: "swap incandescent", estimatedSavingKg: 5 },
+  {
+    category: "electricity",
+    title: "LED bulbs",
+    detail: "swap incandescent",
+    estimatedSavingKg: 5,
+  },
   { category: "shopping", title: "Buy used", detail: "thrift", estimatedSavingKg: 80 },
 ];
 

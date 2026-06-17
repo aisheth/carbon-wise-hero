@@ -20,7 +20,6 @@ vi.mock("@/integrations/supabase/client", () => ({
   supabase: { auth: { signOut: signOutMock } },
 }));
 
-
 import { AppShell } from "../../src/components/app-shell";
 
 function renderShell() {
@@ -67,7 +66,9 @@ describe("AppShell", () => {
     renderShell();
     const missionsLinks = screen.getAllByText("Missions");
     // Find the parent <a> with active style
-    const active = missionsLinks.find((el) => el.closest("a")?.className.includes("bg-primary-soft"));
+    const active = missionsLinks.find((el) =>
+      el.closest("a")?.className.includes("bg-primary-soft"),
+    );
     expect(active).toBeTruthy();
   });
 
@@ -76,9 +77,6 @@ describe("AppShell", () => {
     const buttons = screen.getAllByRole("button", { name: /sign out/i });
     fireEvent.click(buttons[0]);
     await waitFor(() => expect(signOutMock).toHaveBeenCalled());
-    await waitFor(() =>
-      expect(navigateMock).toHaveBeenCalledWith({ to: "/auth", replace: true }),
-    );
+    await waitFor(() => expect(navigateMock).toHaveBeenCalledWith({ to: "/auth", replace: true }));
   });
 });
-
