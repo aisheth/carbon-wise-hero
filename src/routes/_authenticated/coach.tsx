@@ -45,7 +45,9 @@ function CoachPage() {
     <div className="flex flex-col h-[calc(100dvh-7rem)]">
       <div className="mb-4">
         <h1 className="text-3xl font-semibold">AI Carbon Coach</h1>
-        <p className="text-muted-foreground text-sm">Ask anything about sustainability. Powered by Lovable AI.</p>
+        <p className="text-muted-foreground text-sm">
+          Ask anything about sustainability. Powered by Lovable AI.
+        </p>
       </div>
 
       <Card className="flex-1 flex flex-col overflow-hidden">
@@ -59,7 +61,9 @@ function CoachPage() {
               <p className="text-sm text-muted-foreground mt-1">Try one of these:</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2 max-w-xl mx-auto">
                 {SUGGESTIONS.map((s) => (
-                  <Button key={s} variant="outline" size="sm" onClick={() => submit(s)}>{s}</Button>
+                  <Button key={s} variant="outline" size="sm" onClick={() => submit(s)}>
+                    {s}
+                  </Button>
                 ))}
               </div>
             </div>
@@ -74,7 +78,9 @@ function CoachPage() {
                     <Leaf className="size-4 text-primary-foreground" />
                   </div>
                 )}
-                <div className={`max-w-[85%] ${isUser ? "bg-primary text-primary-foreground rounded-2xl rounded-br-sm px-4 py-2.5" : ""}`}>
+                <div
+                  className={`max-w-[85%] ${isUser ? "bg-primary text-primary-foreground rounded-2xl rounded-br-sm px-4 py-2.5" : ""}`}
+                >
                   {isUser ? (
                     <p className="whitespace-pre-wrap text-sm">{text}</p>
                   ) : (
@@ -98,7 +104,10 @@ function CoachPage() {
 
         <form
           className="border-t border-border p-3 flex items-end gap-2"
-          onSubmit={(e) => { e.preventDefault(); submit(input); }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            submit(input);
+          }}
         >
           <Textarea
             value={input}
@@ -107,10 +116,18 @@ function CoachPage() {
             rows={1}
             className="min-h-[44px] max-h-32 resize-none"
             onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(input); }
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                submit(input);
+              }
             }}
           />
-          <Button type="submit" size="icon" disabled={busy || !input.trim()} aria-label="Send message">
+          <Button
+            type="submit"
+            size="icon"
+            disabled={busy || !input.trim()}
+            aria-label="Send message"
+          >
             <Send className="size-4" />
           </Button>
         </form>

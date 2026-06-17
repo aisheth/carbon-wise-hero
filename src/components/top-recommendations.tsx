@@ -23,7 +23,9 @@ export function TopRecommendations({
   if (top.length === 0) {
     return (
       <Card>
-        <CardHeader><CardTitle>AI recommendations</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>AI recommendations</CardTitle>
+        </CardHeader>
         <CardContent className="text-sm text-muted-foreground">
           Your habits look great — no high-impact changes to suggest right now.
         </CardContent>
@@ -41,8 +43,12 @@ export function TopRecommendations({
         {top.map((r, i) => (
           <div key={`${r.category}-${i}`} className="rounded-lg border border-border p-4">
             <div className="flex items-center justify-between mb-2">
-              <Badge variant="secondary" className="capitalize">{r.category}</Badge>
-              <span className="text-xs text-primary font-semibold">~{r.estimatedSavingKg} kg/mo</span>
+              <Badge variant="secondary" className="capitalize">
+                {r.category}
+              </Badge>
+              <span className="text-xs text-primary font-semibold">
+                ~{r.estimatedSavingKg} kg/mo
+              </span>
             </div>
             <h4 className="font-medium leading-snug">{r.title}</h4>
             <p className="text-xs text-muted-foreground mt-1">{r.detail}</p>

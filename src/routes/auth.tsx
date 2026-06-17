@@ -95,10 +95,18 @@ function AuthPage() {
             <TabsTrigger value="signup">Create account</TabsTrigger>
           </TabsList>
           <TabsContent value="signin">
-            <AuthForm submitting={loading} submitLabel="Sign in" onSubmit={(e, p) => withSignIn(e, p, "signin")} />
+            <AuthForm
+              submitting={loading}
+              submitLabel="Sign in"
+              onSubmit={(e, p) => withSignIn(e, p, "signin")}
+            />
           </TabsContent>
           <TabsContent value="signup">
-            <AuthForm submitting={loading} submitLabel="Create account" onSubmit={(e, p) => withSignIn(e, p, "signup")} />
+            <AuthForm
+              submitting={loading}
+              submitLabel="Create account"
+              onSubmit={(e, p) => withSignIn(e, p, "signup")}
+            />
           </TabsContent>
         </Tabs>
 
@@ -108,7 +116,12 @@ function AuthPage() {
           <div className="h-px flex-1 bg-border" />
         </div>
 
-        <Button variant="outline" className="w-full gap-2" onClick={handleGoogle} disabled={loading}>
+        <Button
+          variant="outline"
+          className="w-full gap-2"
+          onClick={handleGoogle}
+          disabled={loading}
+        >
           <Mail className="size-4" /> Continue with Google
         </Button>
       </div>
@@ -137,11 +150,26 @@ function AuthForm({
     >
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input
+          id="email"
+          type="email"
+          autoComplete="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
-        <Input id="password" type="password" autoComplete="current-password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Input
+          id="password"
+          type="password"
+          autoComplete="current-password"
+          required
+          minLength={6}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </div>
       <Button type="submit" className="w-full" disabled={submitting}>
         {submitting ? "Working…" : submitLabel}

@@ -49,7 +49,10 @@ export function parseReceiptText(text: string): ReceiptItem[] {
 }
 
 function cleanLineName(s: string): string {
-  return s.replace(/\s*\$?\d+[.,]?\d*\s*$/, "").replace(/\s{2,}/g, " ").trim();
+  return s
+    .replace(/\s*\$?\d+[.,]?\d*\s*$/, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 export function totalReceiptImpact(items: ReceiptItem[]): number {

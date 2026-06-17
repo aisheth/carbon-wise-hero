@@ -16,7 +16,11 @@ describe("Button", () => {
   });
   it("disabled prevents clicks", () => {
     const onClick = vi.fn();
-    render(<Button disabled onClick={onClick}>X</Button>);
+    render(
+      <Button disabled onClick={onClick}>
+        X
+      </Button>,
+    );
     fireEvent.click(screen.getByRole("button"));
     expect(onClick).not.toHaveBeenCalled();
   });

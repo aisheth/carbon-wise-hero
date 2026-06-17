@@ -35,7 +35,8 @@ export const Route = createFileRoute("/api/chat")({
             const e = err as { statusCode?: number; message?: string } | Error;
             const status = (e as { statusCode?: number }).statusCode;
             if (status === 429) return "Rate limit reached — please try again in a moment.";
-            if (status === 402) return "AI credits exhausted. Add credits to your workspace to continue.";
+            if (status === 402)
+              return "AI credits exhausted. Add credits to your workspace to continue.";
             return "Something went wrong while contacting the AI Coach.";
           },
         });
