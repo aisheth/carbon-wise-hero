@@ -128,7 +128,7 @@ function MissionsPage() {
       toast.error(upErr.message);
       return;
     }
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from("missions")
       .update({ proof_url: path, verification_status: "pending" })
       .eq("id", missionId);

@@ -66,7 +66,7 @@ function ChallengesPage() {
 
   async function join(challengeId: string) {
     if (!user) return;
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from("challenge_participants")
       .insert({ challenge_id: challengeId, user_id: user.id, contributed_kg: 0 });
     if (error) toast.error(error.message);
@@ -78,7 +78,7 @@ function ChallengesPage() {
 
   async function leave(challengeId: string) {
     if (!user) return;
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from("challenge_participants")
       .delete()
       .eq("challenge_id", challengeId)
