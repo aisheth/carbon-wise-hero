@@ -32,12 +32,12 @@ describe("reportLovableError", () => {
   });
 
   it("is a no-op when __lovableEvents is missing", () => {
-    delete (window as any).__lovableEvents;
+    delete window.__lovableEvents;
     expect(() => reportLovableError(new Error("x"))).not.toThrow();
   });
 
   it("is a no-op when captureException is missing", () => {
-    (window as any).__lovableEvents = {};
+    window.__lovableEvents = {};
     expect(() => reportLovableError(new Error("x"))).not.toThrow();
   });
 
