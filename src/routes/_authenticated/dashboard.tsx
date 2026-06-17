@@ -9,6 +9,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from "recharts";
 import { ArrowRight, Flame, Leaf, TrendingDown, Trophy } from "lucide-react";
 import { format, subMonths } from "date-fns";
+import { ImpactCard } from "@/components/impact-card";
+import { TopRecommendations } from "@/components/top-recommendations";
+import { assess, type AssessmentInputs } from "@/lib/carbon";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — Carbon Coach" }] }),
