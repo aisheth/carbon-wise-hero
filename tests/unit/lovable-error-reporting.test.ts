@@ -6,11 +6,11 @@ describe("reportLovableError", () => {
 
   beforeEach(() => {
     captureSpy.mockClear();
-    (window as any).__lovableEvents = { captureException: captureSpy };
+    window.__lovableEvents = { captureException: captureSpy };
   });
 
   afterEach(() => {
-    delete (window as any).__lovableEvents;
+    delete window.__lovableEvents;
   });
 
   it("forwards the error with route and source context", () => {
