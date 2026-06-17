@@ -28,7 +28,9 @@ function ScannerPage() {
   }
 
   async function save() {
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     if (!user) return;
     const { error } = await supabase.from("receipts").insert({
       user_id: user.id,
@@ -45,28 +47,46 @@ function ScannerPage() {
       <div>
         <h1 className="text-3xl font-semibold">Receipt Scanner</h1>
         <p className="text-muted-foreground text-sm">
-          Paste receipt text (or upload an OCR-extracted text file) to estimate the carbon impact of your purchases.
+          Paste receipt text (or upload an OCR-extracted text file) to estimate the carbon impact of
+          your purchases.
         </p>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
         <Card>
-          <CardHeader><CardTitle>Receipt text</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle>Receipt text</CardTitle>
+          </CardHeader>
           <CardContent className="space-y-3">
-            <Textarea rows={12} value={text} onChange={(e) => setText(e.target.value)} placeholder="Paste your receipt here…" />
+            <Textarea
+              rows={12}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Paste your receipt here…"
+            />
             <div className="flex flex-wrap gap-2">
-              <Button onClick={analyze} className="gap-2"><ScanLine className="size-4" /> Analyze</Button>
-              <Button variant="outline" onClick={() => setText(SAMPLE)}>Try sample</Button>
+              <Button onClick={analyze} className="gap-2">
+                <ScanLine className="size-4" /> Analyze
+              </Button>
+              <Button variant="outline" onClick={() => setText(SAMPLE)}>
+                Try sample
+              </Button>
               <label className="inline-flex items-center gap-2 cursor-pointer border border-input rounded-md px-3 py-2 text-sm hover:bg-muted">
                 <Upload className="size-4" /> Upload .txt
-                <input type="file" accept=".txt" className="hidden" onChange={async (e) => {
-                  const f = e.target.files?.[0];
-                  if (f) setText(await f.text());
-                }} />
+                <input
+                  type="file"
+                  accept=".txt"
+                  className="hidden"
+                  onChange={async (e) => {
+                    const f = e.target.files?.[0];
+                    if (f) setText(await f.text());
+                  }}
+                />
               </label>
             </div>
             <p className="text-xs text-muted-foreground">
-              Tip: Real OCR (image scanning) requires a cloud OCR service. For now, paste text from your receipt app or use the sample.
+              Tip: Real OCR (image scanning) requires a cloud OCR service. For now, paste text from
+              your receipt app or use the sample.
             </p>
           </CardContent>
         </Card>
@@ -74,22 +94,32 @@ function ScannerPage() {
         <Card>
           <CardHeader className="flex-row items-center justify-between">
             <CardTitle>Estimated impact</CardTitle>
-            {items.length > 0 && <Button size="sm" variant="outline" onClick={save}>Save to history</Button>}
+            {items.length > 0 && (
+              <Button size="sm" variant="outline" onClick={save}>
+                Save to history
+              </Button>
+            )}
           </CardHeader>
           <CardContent>
             {items.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Items will appear here after analysis.</p>
+              <p className="text-sm text-muted-foreground">
+                Items will appear here after analysis.
+              </p>
             ) : (
               <>
                 <div className="rounded-xl bg-primary-soft p-4 mb-4 text-center">
                   <div className="text-xs text-muted-foreground">Total estimated CO₂e</div>
-                  <div className="text-3xl font-display font-semibold text-primary mt-1">{total} kg</div>
+                  <div className="text-3xl font-display font-semibold text-primary mt-1">
+                    {total} kg
+                  </div>
                 </div>
                 <ul className="divide-y divide-border">
                   {items.map((it, i) => (
                     <li key={i} className="flex items-center justify-between py-2.5">
                       <div className="flex items-center gap-2 min-w-0">
-                        <Badge variant="secondary" className="capitalize">{it.category}</Badge>
+                        <Badge variant="secondary" className="capitalize">
+                          {it.category}
+                        </Badge>
                         <span className="text-sm truncate">{it.name}</span>
                       </div>
                       <span className="text-sm text-muted-foreground">{it.co2Kg} kg</span>

@@ -1,7 +1,20 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Leaf, LayoutDashboard, MessageCircle, Target, Calculator, ScanLine, Trophy, ClipboardList, Users, LogOut, Menu, X } from "lucide-react";
+import {
+  Leaf,
+  LayoutDashboard,
+  MessageCircle,
+  Target,
+  Calculator,
+  ScanLine,
+  Trophy,
+  ClipboardList,
+  Users,
+  LogOut,
+  Menu,
+  X,
+} from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
@@ -57,7 +70,12 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
             <span className="font-display font-semibold">Carbon Coach</span>
           </Link>
-          <Button size="icon" variant="ghost" onClick={() => setOpen((v) => !v)} aria-label="Toggle menu">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Toggle menu"
+          >
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
           </Button>
         </div>

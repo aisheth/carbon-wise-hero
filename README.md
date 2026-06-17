@@ -19,17 +19,17 @@ AI-powered carbon footprint tracking, weekly eco-missions, and a personal sustai
 
 ## Stack
 
-| Concern | Choice |
-|---|---|
-| Framework | **TanStack Start** (React 19 + Vite 7) |
-| Language | TypeScript (strict mode) |
-| Styling | Tailwind CSS v4 + shadcn/ui |
-| Backend | **Lovable Cloud** (Supabase under the hood — managed Postgres, Auth, Storage) |
-| AI | **Lovable AI Gateway** (Google Gemini, no external key required) |
-| Charts | Recharts |
-| State | TanStack Query |
-| Tests | Vitest + React Testing Library + jsdom |
-| CI | GitHub Actions |
+| Concern   | Choice                                                                        |
+| --------- | ----------------------------------------------------------------------------- |
+| Framework | **TanStack Start** (React 19 + Vite 7)                                        |
+| Language  | TypeScript (strict mode)                                                      |
+| Styling   | Tailwind CSS v4 + shadcn/ui                                                   |
+| Backend   | **Lovable Cloud** (Supabase under the hood — managed Postgres, Auth, Storage) |
+| AI        | **Lovable AI Gateway** (Google Gemini, no external key required)              |
+| Charts    | Recharts                                                                      |
+| State     | TanStack Query                                                                |
+| Tests     | Vitest + React Testing Library + jsdom                                        |
+| CI        | GitHub Actions                                                                |
 
 > The original brief asked for Next.js + Firebase + OpenAI. Lovable's runtime is TanStack Start + Lovable Cloud (Supabase) + Lovable AI Gateway, which give us the same capabilities (SSR, auth, DB, storage, server functions, AI) without external accounts or API keys.
 
@@ -66,6 +66,7 @@ tests/
 ```
 
 ### Clean architecture principles applied
+
 - Pure business logic (`lib/carbon.ts`, `lib/missions.ts`, `lib/receipt.ts`) has **no I/O dependencies** and is fully unit-testable.
 - Server-only code is suffixed `.server.ts` and never imported by client code.
 - Database access goes through Supabase RLS policies (every table scoped to `auth.uid()`).
@@ -73,15 +74,15 @@ tests/
 
 ## Database schema
 
-| Table | Purpose |
-|---|---|
-| `profiles` | display_name, avatar, points, streaks (auto-created on signup) |
-| `assessments` | per-submission inputs + category breakdown + score |
-| `emissions_log` | monthly trend snapshots |
-| `missions` | weekly auto-generated goals, completion tracking |
-| `badges` / `user_badges` | seeded achievements + earned set |
-| `chat_threads` / `chat_messages` | AI Coach history |
-| `receipts` | OCR text + parsed items + CO₂ estimate |
+| Table                            | Purpose                                                        |
+| -------------------------------- | -------------------------------------------------------------- |
+| `profiles`                       | display_name, avatar, points, streaks (auto-created on signup) |
+| `assessments`                    | per-submission inputs + category breakdown + score             |
+| `emissions_log`                  | monthly trend snapshots                                        |
+| `missions`                       | weekly auto-generated goals, completion tracking               |
+| `badges` / `user_badges`         | seeded achievements + earned set                               |
+| `chat_threads` / `chat_messages` | AI Coach history                                               |
+| `receipts`                       | OCR text + parsed items + CO₂ estimate                         |
 
 RLS is enabled on every table. All policies scope to `auth.uid()`, except `profiles` SELECT which is broad so the leaderboard works.
 
@@ -105,6 +106,7 @@ bun run test:coverage
 Coverage targets (in `vitest.config.ts`): **80% lines / statements / functions, 70% branches** on `src/lib` and `src/components`. UI primitives under `src/components/ui` are excluded as they're vendored from shadcn.
 
 Test layers:
+
 - **Unit**: carbon calculation engine, score function, recommendation engine, mission generator, receipt parser, utility helpers — all pure, deterministic, fast.
 - **Integration**: data-layer with a fully-mocked Supabase client; verifies assessment writes and mission updates use the correct tables/payloads.
 - **Component**: smoke tests for shadcn-derived primitives.
@@ -112,15 +114,18 @@ Test layers:
 ### Adding E2E
 
 A full E2E suite (Playwright/Cypress) requires test accounts and a running database. Recommended pattern:
+
 ```bash
 bun add -d @playwright/test
 bunx playwright install --with-deps
 ```
+
 Then create `e2e/` specs that sign up a throwaway user, take the assessment, and verify the dashboard renders the expected score. CI provisions a test Lovable Cloud project per branch.
 
 ## CI / CD
 
 `.github/workflows/ci.yml` runs on every push/PR:
+
 1. `bun install --frozen-lockfile`
 2. `bun run lint`
 3. `bunx tsc --noEmit`

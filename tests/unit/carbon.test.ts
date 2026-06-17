@@ -11,14 +11,28 @@ import {
 } from "../../src/lib/carbon";
 
 const lowImpact: AssessmentInputs = {
-  carKmPerWeek: 0, carType: "none", transitKmPerWeek: 30, flightHoursPerYear: 0,
-  electricityKwhPerMonth: 100, renewableShare: 1, diet: "vegan",
-  shopping: "minimal", waste: "low", recycles: true,
+  carKmPerWeek: 0,
+  carType: "none",
+  transitKmPerWeek: 30,
+  flightHoursPerYear: 0,
+  electricityKwhPerMonth: 100,
+  renewableShare: 1,
+  diet: "vegan",
+  shopping: "minimal",
+  waste: "low",
+  recycles: true,
 };
 const highImpact: AssessmentInputs = {
-  carKmPerWeek: 400, carType: "diesel", transitKmPerWeek: 0, flightHoursPerYear: 40,
-  electricityKwhPerMonth: 900, renewableShare: 0, diet: "heavy_meat",
-  shopping: "frequent", waste: "high", recycles: false,
+  carKmPerWeek: 400,
+  carType: "diesel",
+  transitKmPerWeek: 0,
+  flightHoursPerYear: 40,
+  electricityKwhPerMonth: 900,
+  renewableShare: 0,
+  diet: "heavy_meat",
+  shopping: "frequent",
+  waste: "high",
+  recycles: false,
 };
 
 describe("clamp / round1", () => {
@@ -86,7 +100,9 @@ describe("assess (integration of calc + score + recs)", () => {
     const r = assess(highImpact);
     expect(r.recommendations.length).toBeLessThanOrEqual(5);
     for (let i = 1; i < r.recommendations.length; i++) {
-      expect(r.recommendations[i - 1].estimatedSavingKg).toBeGreaterThanOrEqual(r.recommendations[i].estimatedSavingKg);
+      expect(r.recommendations[i - 1].estimatedSavingKg).toBeGreaterThanOrEqual(
+        r.recommendations[i].estimatedSavingKg,
+      );
     }
   });
 });
@@ -97,7 +113,11 @@ describe("generateRecommendations edge cases", () => {
     expect(generateRecommendations(breakdown, lowImpact)).toEqual([]);
   });
   it("suggests renewable switch only with high consumption", () => {
-    const inputs: AssessmentInputs = { ...lowImpact, electricityKwhPerMonth: 50, renewableShare: 0 };
+    const inputs: AssessmentInputs = {
+      ...lowImpact,
+      electricityKwhPerMonth: 50,
+      renewableShare: 0,
+    };
     const recs = generateRecommendations(calculateEmissions(inputs), inputs);
     expect(recs.find((r) => r.category === "electricity")).toBeUndefined();
   });

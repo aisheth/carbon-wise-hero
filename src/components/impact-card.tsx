@@ -10,13 +10,25 @@ export function ImpactCard({ co2Kg }: { co2Kg: number }) {
   const impact = computeImpact(co2Kg);
   const items: Array<{ label: string; value: string; hint: string; Icon: typeof Cloud }> = [
     { label: "CO₂ avoided", value: `${impact.co2Kg} kg`, hint: "this month", Icon: Cloud },
-    { label: "Tree-years", value: `${impact.trees}`, hint: "absorption equivalent", Icon: TreePine },
-    { label: "Water saved", value: `${impact.waterLitres} L`, hint: "vs. avoided generation", Icon: Droplets },
+    {
+      label: "Tree-years",
+      value: `${impact.trees}`,
+      hint: "absorption equivalent",
+      Icon: TreePine,
+    },
+    {
+      label: "Water saved",
+      value: `${impact.waterLitres} L`,
+      hint: "vs. avoided generation",
+      Icon: Droplets,
+    },
     { label: "Energy saved", value: `${impact.energyKwh} kWh`, hint: "grid equivalent", Icon: Zap },
   ];
   return (
     <Card>
-      <CardHeader><CardTitle>Your impact</CardTitle></CardHeader>
+      <CardHeader>
+        <CardTitle>Your impact</CardTitle>
+      </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {items.map(({ label, value, hint, Icon }) => (

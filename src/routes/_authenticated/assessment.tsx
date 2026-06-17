@@ -7,7 +7,14 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import { assess, type AssessmentInputs, type CarType, type DietType, type ShoppingHabit, type WasteHabit } from "@/lib/carbon";
+import {
+  assess,
+  type AssessmentInputs,
+  type CarType,
+  type DietType,
+  type ShoppingHabit,
+  type WasteHabit,
+} from "@/lib/carbon";
 import { supabase } from "@/integrations/supabase/client";
 import { generateWeeklyMissions, weekStart, isoDate } from "@/lib/missions";
 import { toast } from "sonner";
@@ -45,7 +52,9 @@ function AssessmentPage() {
     setSaving(true);
     try {
       const result = assess(v);
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) throw new Error("Not signed in");
 
       const { error } = await supabase.from("assessments").insert({
@@ -64,22 +73,40 @@ function AssessmentPage() {
       // Auto-generate weekly missions if none exist this week
       const ws = isoDate(weekStart());
       const { data: existing } = await supabase
-        .from("missions").select("id").eq("user_id", user.id).eq("week_start", ws).limit(1);
+        .from("missions")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("week_start", ws)
+        .limit(1);
       if (!existing || existing.length === 0) {
         const picks = generateWeeklyMissions(
-          { transport: result.transport, electricity: result.electricity, food: result.food, shopping: result.shopping, waste: result.waste },
+          {
+            transport: result.transport,
+            electricity: result.electricity,
+            food: result.food,
+            shopping: result.shopping,
+            waste: result.waste,
+          },
           ws,
         );
         await supabase.from("missions").insert(
           picks.map((m) => ({
-            user_id: user.id, title: m.title, description: m.description,
-            category: m.category, estimated_co2_kg: m.estimatedCo2Kg, points: m.points, week_start: ws,
+            user_id: user.id,
+            title: m.title,
+            description: m.description,
+            category: m.category,
+            estimated_co2_kg: m.estimatedCo2Kg,
+            points: m.points,
+            week_start: ws,
           })),
         );
       }
 
       // First-steps badge
-      await supabase.from("user_badges").insert({ user_id: user.id, badge_id: "first_steps" }).then(() => {});
+      await supabase
+        .from("user_badges")
+        .insert({ user_id: user.id, badge_id: "first_steps" })
+        .then(() => {});
 
       toast.success(`Score: ${result.score}/100 — ${Math.round(result.total)} kg CO₂/mo`);
       qc.invalidateQueries();
@@ -95,47 +122,107 @@ function AssessmentPage() {
     <div className="space-y-6 max-w-3xl mx-auto">
       <div>
         <h1 className="text-3xl font-semibold">Carbon Assessment</h1>
-        <p className="text-muted-foreground mt-1">Five quick categories. Defaults are average for context.</p>
+        <p className="text-muted-foreground mt-1">
+          Five quick categories. Defaults are average for context.
+        </p>
       </div>
 
       <Section title="Transportation">
-        <Slide label={`Car kilometers per week: ${v.carKmPerWeek} km`} value={v.carKmPerWeek} min={0} max={1000} step={10} onChange={(n) => set("carKmPerWeek", n)} />
+        <Slide
+          label={`Car kilometers per week: ${v.carKmPerWeek} km`}
+          value={v.carKmPerWeek}
+          min={0}
+          max={1000}
+          step={10}
+          onChange={(n) => set("carKmPerWeek", n)}
+        />
         <div className="space-y-2">
           <Label>Car type</Label>
-          <RadioGroup value={v.carType} onValueChange={(x) => set("carType", x as CarType)} className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-            {(["none","ev","hybrid","gasoline","diesel"] as CarType[]).map((c) => (
-              <label key={c} className="flex items-center gap-2 border border-border rounded-lg px-3 py-2 cursor-pointer hover:bg-muted">
+          <RadioGroup
+            value={v.carType}
+            onValueChange={(x) => set("carType", x as CarType)}
+            className="grid grid-cols-2 sm:grid-cols-5 gap-2"
+          >
+            {(["none", "ev", "hybrid", "gasoline", "diesel"] as CarType[]).map((c) => (
+              <label
+                key={c}
+                className="flex items-center gap-2 border border-border rounded-lg px-3 py-2 cursor-pointer hover:bg-muted"
+              >
                 <RadioGroupItem value={c} /> <span className="capitalize text-sm">{c}</span>
               </label>
             ))}
           </RadioGroup>
         </div>
-        <Slide label={`Transit km/week: ${v.transitKmPerWeek}`} value={v.transitKmPerWeek} min={0} max={500} step={5} onChange={(n) => set("transitKmPerWeek", n)} />
-        <Slide label={`Flight hours per year: ${v.flightHoursPerYear}`} value={v.flightHoursPerYear} min={0} max={80} step={1} onChange={(n) => set("flightHoursPerYear", n)} />
+        <Slide
+          label={`Transit km/week: ${v.transitKmPerWeek}`}
+          value={v.transitKmPerWeek}
+          min={0}
+          max={500}
+          step={5}
+          onChange={(n) => set("transitKmPerWeek", n)}
+        />
+        <Slide
+          label={`Flight hours per year: ${v.flightHoursPerYear}`}
+          value={v.flightHoursPerYear}
+          min={0}
+          max={80}
+          step={1}
+          onChange={(n) => set("flightHoursPerYear", n)}
+        />
       </Section>
 
       <Section title="Electricity">
         <div className="space-y-2">
           <Label htmlFor="kwh">Monthly home electricity (kWh)</Label>
-          <Input id="kwh" type="number" min={0} value={v.electricityKwhPerMonth} onChange={(e) => set("electricityKwhPerMonth", Number(e.target.value) || 0)} />
+          <Input
+            id="kwh"
+            type="number"
+            min={0}
+            value={v.electricityKwhPerMonth}
+            onChange={(e) => set("electricityKwhPerMonth", Number(e.target.value) || 0)}
+          />
         </div>
-        <Slide label={`Renewable share: ${Math.round(v.renewableShare * 100)}%`} value={v.renewableShare * 100} min={0} max={100} step={5} onChange={(n) => set("renewableShare", n / 100)} />
+        <Slide
+          label={`Renewable share: ${Math.round(v.renewableShare * 100)}%`}
+          value={v.renewableShare * 100}
+          min={0}
+          max={100}
+          step={5}
+          onChange={(n) => set("renewableShare", n / 100)}
+        />
       </Section>
 
       <Section title="Food">
-        <RadioGroup value={v.diet} onValueChange={(x) => set("diet", x as DietType)} className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {(["vegan","vegetarian","pescatarian","omnivore","heavy_meat"] as DietType[]).map((c) => (
-            <label key={c} className="flex items-center gap-2 border border-border rounded-lg px-3 py-2 cursor-pointer hover:bg-muted">
-              <RadioGroupItem value={c} /> <span className="capitalize text-sm">{c.replace("_", " ")}</span>
-            </label>
-          ))}
+        <RadioGroup
+          value={v.diet}
+          onValueChange={(x) => set("diet", x as DietType)}
+          className="grid grid-cols-2 sm:grid-cols-3 gap-2"
+        >
+          {(["vegan", "vegetarian", "pescatarian", "omnivore", "heavy_meat"] as DietType[]).map(
+            (c) => (
+              <label
+                key={c}
+                className="flex items-center gap-2 border border-border rounded-lg px-3 py-2 cursor-pointer hover:bg-muted"
+              >
+                <RadioGroupItem value={c} />{" "}
+                <span className="capitalize text-sm">{c.replace("_", " ")}</span>
+              </label>
+            ),
+          )}
         </RadioGroup>
       </Section>
 
       <Section title="Shopping">
-        <RadioGroup value={v.shopping} onValueChange={(x) => set("shopping", x as ShoppingHabit)} className="grid grid-cols-3 gap-2">
-          {(["minimal","average","frequent"] as ShoppingHabit[]).map((c) => (
-            <label key={c} className="flex items-center gap-2 border border-border rounded-lg px-3 py-2 cursor-pointer hover:bg-muted">
+        <RadioGroup
+          value={v.shopping}
+          onValueChange={(x) => set("shopping", x as ShoppingHabit)}
+          className="grid grid-cols-3 gap-2"
+        >
+          {(["minimal", "average", "frequent"] as ShoppingHabit[]).map((c) => (
+            <label
+              key={c}
+              className="flex items-center gap-2 border border-border rounded-lg px-3 py-2 cursor-pointer hover:bg-muted"
+            >
               <RadioGroupItem value={c} /> <span className="capitalize text-sm">{c}</span>
             </label>
           ))}
@@ -143,9 +230,16 @@ function AssessmentPage() {
       </Section>
 
       <Section title="Waste">
-        <RadioGroup value={v.waste} onValueChange={(x) => set("waste", x as WasteHabit)} className="grid grid-cols-3 gap-2">
-          {(["low","medium","high"] as WasteHabit[]).map((c) => (
-            <label key={c} className="flex items-center gap-2 border border-border rounded-lg px-3 py-2 cursor-pointer hover:bg-muted">
+        <RadioGroup
+          value={v.waste}
+          onValueChange={(x) => set("waste", x as WasteHabit)}
+          className="grid grid-cols-3 gap-2"
+        >
+          {(["low", "medium", "high"] as WasteHabit[]).map((c) => (
+            <label
+              key={c}
+              className="flex items-center gap-2 border border-border rounded-lg px-3 py-2 cursor-pointer hover:bg-muted"
+            >
               <RadioGroupItem value={c} /> <span className="capitalize text-sm">{c}</span>
             </label>
           ))}
@@ -157,7 +251,9 @@ function AssessmentPage() {
       </Section>
 
       <div className="flex justify-end">
-        <Button size="lg" onClick={submit} disabled={saving}>{saving ? "Calculating…" : "Calculate my footprint"}</Button>
+        <Button size="lg" onClick={submit} disabled={saving}>
+          {saving ? "Calculating…" : "Calculate my footprint"}
+        </Button>
       </div>
     </div>
   );
@@ -166,17 +262,39 @@ function AssessmentPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <Card>
-      <CardHeader><CardTitle>{title}</CardTitle></CardHeader>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
       <CardContent className="space-y-5">{children}</CardContent>
     </Card>
   );
 }
 
-function Slide({ label, value, min, max, step, onChange }: { label: string; value: number; min: number; max: number; step: number; onChange: (n: number) => void }) {
+function Slide({
+  label,
+  value,
+  min,
+  max,
+  step,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  onChange: (n: number) => void;
+}) {
   return (
     <div className="space-y-2">
       <Label>{label}</Label>
-      <Slider value={[value]} min={min} max={max} step={step} onValueChange={(v) => onChange(v[0])} />
+      <Slider
+        value={[value]}
+        min={min}
+        max={max}
+        step={step}
+        onValueChange={(v) => onChange(v[0])}
+      />
     </div>
   );
 }

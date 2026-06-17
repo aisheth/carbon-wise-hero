@@ -8,9 +8,17 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Carbon Coach — Track and shrink your carbon footprint" },
-      { name: "description", content: "AI-powered carbon footprint tracking, weekly eco missions, and personalized strategies to live a low-carbon life." },
+      {
+        name: "description",
+        content:
+          "AI-powered carbon footprint tracking, weekly eco missions, and personalized strategies to live a low-carbon life.",
+      },
       { property: "og:title", content: "Carbon Coach — Track and shrink your carbon footprint" },
-      { property: "og:description", content: "AI-powered carbon footprint tracking, weekly eco missions, and personalized strategies to live a low-carbon life." },
+      {
+        property: "og:description",
+        content:
+          "AI-powered carbon footprint tracking, weekly eco missions, and personalized strategies to live a low-carbon life.",
+      },
     ],
   }),
   component: Landing,
@@ -35,8 +43,12 @@ function Landing() {
             <span className="font-display text-lg font-semibold">Carbon Coach</span>
           </Link>
           <div className="flex items-center gap-2">
-            <Link to="/auth"><Button variant="ghost">Sign in</Button></Link>
-            <Link to="/auth"><Button>Get started</Button></Link>
+            <Link to="/auth">
+              <Button variant="ghost">Sign in</Button>
+            </Link>
+            <Link to="/auth">
+              <Button>Get started</Button>
+            </Link>
           </div>
         </div>
       </header>
@@ -51,21 +63,45 @@ function Landing() {
             Shrink your footprint, <span className="text-primary">one habit at a time.</span>
           </h1>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Carbon Coach measures your monthly CO₂ across transport, energy, food, shopping, and waste — then turns it into a clear plan you'll actually stick to.
+            Carbon Coach measures your monthly CO₂ across transport, energy, food, shopping, and
+            waste — then turns it into a clear plan you'll actually stick to.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <Link to="/auth"><Button size="lg" className="gap-2">Start your assessment <ArrowRight className="size-4" /></Button></Link>
-            <a href="#features"><Button size="lg" variant="outline">See how it works</Button></a>
+            <Link to="/auth">
+              <Button size="lg" className="gap-2">
+                Start your assessment <ArrowRight className="size-4" />
+              </Button>
+            </Link>
+            <a href="#features">
+              <Button size="lg" variant="outline">
+                See how it works
+              </Button>
+            </a>
           </div>
         </div>
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 -bottom-24 h-72 eco-gradient opacity-20 blur-3xl" />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 -bottom-24 h-72 eco-gradient opacity-20 blur-3xl"
+        />
       </section>
 
       <section id="features" className="border-t border-border bg-surface">
         <div className="mx-auto max-w-6xl px-4 lg:px-8 py-20 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Feature icon={BarChart3} title="Know your number" body="A 2-minute lifestyle check gives you a clear monthly kg CO₂e, broken down by category." />
-          <Feature icon={Target} title="Weekly Eco Missions" body="Three personalized goals every week with estimated CO₂ savings and streak tracking." />
-          <Feature icon={ScanLine} title="Receipt scanner" body="Snap a grocery receipt and instantly see the carbon impact of what you bought." />
+          <Feature
+            icon={BarChart3}
+            title="Know your number"
+            body="A 2-minute lifestyle check gives you a clear monthly kg CO₂e, broken down by category."
+          />
+          <Feature
+            icon={Target}
+            title="Weekly Eco Missions"
+            body="Three personalized goals every week with estimated CO₂ savings and streak tracking."
+          />
+          <Feature
+            icon={ScanLine}
+            title="Receipt scanner"
+            body="Snap a grocery receipt and instantly see the carbon impact of what you bought."
+          />
         </div>
       </section>
 

@@ -101,9 +101,7 @@ export function calculateEmissions(inputs: AssessmentInputs): CategoryBreakdown 
   const flightMonthly = (Math.max(0, inputs.flightHoursPerYear) * FLIGHT_KG_PER_HOUR) / 12;
 
   const transport =
-    carKmPerMonth * CAR_FACTOR[inputs.carType] +
-    transitKmPerMonth * TRANSIT_FACTOR +
-    flightMonthly;
+    carKmPerMonth * CAR_FACTOR[inputs.carType] + transitKmPerMonth * TRANSIT_FACTOR + flightMonthly;
 
   const electricity =
     Math.max(0, inputs.electricityKwhPerMonth) *
@@ -131,7 +129,7 @@ export function calculateEmissions(inputs: AssessmentInputs): CategoryBreakdown 
  */
 export function calculateScore(totalKgPerMonth: number): number {
   if (totalKgPerMonth <= 0) return 100;
-  const score = 100 - (totalKgPerMonth / 20);
+  const score = 100 - totalKgPerMonth / 20;
   return Math.round(clamp(score, 0, 100));
 }
 
@@ -195,7 +193,11 @@ export function generateRecommendations(
 export function assess(inputs: AssessmentInputs): AssessmentResult {
   const breakdown = calculateEmissions(inputs);
   const total = round1(
-    breakdown.transport + breakdown.electricity + breakdown.food + breakdown.shopping + breakdown.waste,
+    breakdown.transport +
+      breakdown.electricity +
+      breakdown.food +
+      breakdown.shopping +
+      breakdown.waste,
   );
   return {
     ...breakdown,

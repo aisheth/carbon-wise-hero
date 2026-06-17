@@ -2,12 +2,12 @@
 
 ## Layers
 
-| Layer | Tools | Lives in | Purpose |
-|---|---|---|---|
-| Unit | Vitest | `tests/unit/` | Pure functions: `carbon`, `missions`, `receipt`, `impact` |
-| Integration | Vitest + mocked Supabase | `tests/integration/` | Verifies the data-layer calls correct tables/payloads |
-| Component | Vitest + Testing Library + jsdom | `tests/components/` | Smoke tests for shadcn-derived UI primitives |
-| (Optional) E2E | Playwright | `e2e/` | Sign-up → assessment → dashboard happy path |
+| Layer          | Tools                            | Lives in             | Purpose                                                   |
+| -------------- | -------------------------------- | -------------------- | --------------------------------------------------------- |
+| Unit           | Vitest                           | `tests/unit/`        | Pure functions: `carbon`, `missions`, `receipt`, `impact` |
+| Integration    | Vitest + mocked Supabase         | `tests/integration/` | Verifies the data-layer calls correct tables/payloads     |
+| Component      | Vitest + Testing Library + jsdom | `tests/components/`  | Smoke tests for shadcn-derived UI primitives              |
+| (Optional) E2E | Playwright                       | `e2e/`               | Sign-up → assessment → dashboard happy path               |
 
 ## Running
 
@@ -18,6 +18,7 @@ bun run test:coverage # with V8 coverage report → ./coverage
 ```
 
 Coverage thresholds (`vitest.config.ts`):
+
 - 80% lines / statements / functions, 70% branches on `src/lib` and `src/components`.
 - `src/components/ui/*` excluded (vendored shadcn primitives).
 
@@ -40,6 +41,7 @@ Pure functions go in `tests/unit/`. Anything that touches Supabase belongs in
 ## CI
 
 `.github/workflows/ci.yml` runs on every push and pull request:
+
 1. `bun install --frozen-lockfile`
 2. `bun run lint`
 3. `bunx tsc --noEmit`

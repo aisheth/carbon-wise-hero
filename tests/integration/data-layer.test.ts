@@ -37,14 +37,28 @@ describe("assessment write path", () => {
     const { supabase } = await import("../../src/integrations/supabase/client");
     const { assess } = await import("../../src/lib/carbon");
     const inputs = {
-      carKmPerWeek: 100, carType: "gasoline" as const, transitKmPerWeek: 0, flightHoursPerYear: 2,
-      electricityKwhPerMonth: 300, renewableShare: 0.2, diet: "omnivore" as const,
-      shopping: "average" as const, waste: "medium" as const, recycles: true,
+      carKmPerWeek: 100,
+      carType: "gasoline" as const,
+      transitKmPerWeek: 0,
+      flightHoursPerYear: 2,
+      electricityKwhPerMonth: 300,
+      renewableShare: 0.2,
+      diet: "omnivore" as const,
+      shopping: "average" as const,
+      waste: "medium" as const,
+      recycles: true,
     };
     const r = assess(inputs);
     await supabase.from("assessments").insert({
-      user_id: "u_1", inputs, transport_kg: r.transport, electricity_kg: r.electricity,
-      food_kg: r.food, shopping_kg: r.shopping, waste_kg: r.waste, total_kg: r.total, score: r.score,
+      user_id: "u_1",
+      inputs,
+      transport_kg: r.transport,
+      electricity_kg: r.electricity,
+      food_kg: r.food,
+      shopping_kg: r.shopping,
+      waste_kg: r.waste,
+      total_kg: r.total,
+      score: r.score,
     });
     expect(insertMock).toHaveBeenCalledTimes(1);
     const payload = insertMock.mock.calls[0][0];
@@ -57,7 +71,10 @@ describe("assessment write path", () => {
 describe("missions completion flow", () => {
   it("toggles a mission as completed", async () => {
     const { supabase } = await import("../../src/integrations/supabase/client");
-    await supabase.from("missions").update({ completed: true, completed_at: new Date().toISOString() }).eq("id", "m_1");
+    await supabase
+      .from("missions")
+      .update({ completed: true, completed_at: new Date().toISOString() })
+      .eq("id", "m_1");
     expect(updateMock).toHaveBeenCalled();
     expect(eqMock).toHaveBeenCalledWith("id", "m_1");
   });

@@ -67,11 +67,11 @@ erDiagram
 
 ## Security-sensitive surfaces
 
-| Object | Why | Access |
-|---|---|---|
-| `profiles` SELECT | leaderboard previously needed broad reads — now only own row | `auth.uid() = id` |
-| `public.get_leaderboard()` | returns whitelisted public columns only | `authenticated` |
-| `public.get_challenge_progress()` | aggregate counts only (no PII) | `authenticated` |
-| `mission-proofs` storage bucket | private; folder = `auth.uid()` | own folder only |
+| Object                            | Why                                                          | Access            |
+| --------------------------------- | ------------------------------------------------------------ | ----------------- |
+| `profiles` SELECT                 | leaderboard previously needed broad reads — now only own row | `auth.uid() = id` |
+| `public.get_leaderboard()`        | returns whitelisted public columns only                      | `authenticated`   |
+| `public.get_challenge_progress()` | aggregate counts only (no PII)                               | `authenticated`   |
+| `mission-proofs` storage bucket   | private; folder = `auth.uid()`                               | own folder only   |
 
 See [SECURITY.md](./SECURITY.md) for the full threat model.

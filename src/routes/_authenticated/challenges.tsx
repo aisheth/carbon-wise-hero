@@ -24,7 +24,11 @@ interface ChallengeRow {
   goal_co2_kg: number;
   ends_at: string;
 }
-interface ProgressRow { challenge_id: string; participant_count: number; total_kg: number }
+interface ProgressRow {
+  challenge_id: string;
+  participant_count: number;
+  total_kg: number;
+}
 
 function ChallengesPage() {
   const qc = useQueryClient();
@@ -42,14 +46,19 @@ function ChallengesPage() {
         sb.from("challenges").select("*").order("ends_at"),
         sb.rpc("get_challenge_progress"),
         user
-          ? sb.from("challenge_participants").select("challenge_id,contributed_kg").eq("user_id", user.id)
-          : Promise.resolve({ data: [] as Array<{ challenge_id: string; contributed_kg: number }> }),
+          ? sb
+              .from("challenge_participants")
+              .select("challenge_id,contributed_kg")
+              .eq("user_id", user.id)
+          : Promise.resolve({
+              data: [] as Array<{ challenge_id: string; contributed_kg: number }>,
+            }),
       ]);
       const progressByChallenge = new Map<string, ProgressRow>(
-        (((progress ?? []) as unknown) as ProgressRow[]).map((p) => [p.challenge_id, p]),
+        ((progress ?? []) as unknown as ProgressRow[]).map((p) => [p.challenge_id, p]),
       );
       const joinedIds = new Set(
-        (((mine ?? []) as unknown) as Array<{ challenge_id: string }>).map((m) => m.challenge_id),
+        ((mine ?? []) as unknown as Array<{ challenge_id: string }>).map((m) => m.challenge_id),
       );
       return { challenges: (challenges ?? []) as ChallengeRow[], progressByChallenge, joinedIds };
     },
@@ -57,33 +66,47 @@ function ChallengesPage() {
 
   async function join(challengeId: string) {
     if (!user) return;
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from("challenge_participants")
       .insert({ challenge_id: challengeId, user_id: user.id, contributed_kg: 0 });
     if (error) toast.error(error.message);
-    else { toast.success("You're in! Track your savings via missions."); qc.invalidateQueries({ queryKey: ["challenges"] }); }
+    else {
+      toast.success("You're in! Track your savings via missions.");
+      qc.invalidateQueries({ queryKey: ["challenges"] });
+    }
   }
 
   async function leave(challengeId: string) {
     if (!user) return;
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from("challenge_participants")
       .delete()
       .eq("challenge_id", challengeId)
       .eq("user_id", user.id);
     if (error) toast.error(error.message);
-    else { toast.success("Left challenge"); qc.invalidateQueries({ queryKey: ["challenges"] }); }
+    else {
+      toast.success("Left challenge");
+      qc.invalidateQueries({ queryKey: ["challenges"] });
+    }
   }
 
   if (isLoading) {
-    return <div className="space-y-4"><Skeleton className="h-10 w-64" /><Skeleton className="h-40" /><Skeleton className="h-40" /></div>;
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-10 w-64" />
+        <Skeleton className="h-40" />
+        <Skeleton className="h-40" />
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
       <header>
         <h1 className="text-3xl font-semibold">Community Challenges</h1>
-        <p className="text-muted-foreground text-sm">Join collective goals and watch the community footprint shrink.</p>
+        <p className="text-muted-foreground text-sm">
+          Join collective goals and watch the community footprint shrink.
+        </p>
       </header>
 
       <div className="grid md:grid-cols-2 gap-4">
@@ -91,13 +114,18 @@ function ChallengesPage() {
           const p = data.progressByChallenge.get(c.id);
           const totalKg = Number(p?.total_kg ?? 0);
           const participants = Number(p?.participant_count ?? 0);
-          const pct = Math.min(100, Math.round((totalKg / Math.max(1, Number(c.goal_co2_kg))) * 100));
+          const pct = Math.min(
+            100,
+            Math.round((totalKg / Math.max(1, Number(c.goal_co2_kg))) * 100),
+          );
           const joined = data.joinedIds.has(c.id);
           return (
             <Card key={c.id}>
               <CardHeader className="flex flex-row items-start justify-between gap-2">
                 <div>
-                  <Badge variant="secondary" className="capitalize mb-2">{c.category}</Badge>
+                  <Badge variant="secondary" className="capitalize mb-2">
+                    {c.category}
+                  </Badge>
                   <CardTitle>{c.name}</CardTitle>
                 </div>
                 <Target className="size-5 text-primary" aria-hidden />
@@ -106,18 +134,33 @@ function ChallengesPage() {
                 <p className="text-sm text-muted-foreground">{c.description}</p>
                 <Progress value={pct} aria-label={`${pct}% of goal`} />
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span>{totalKg.toFixed(0)} / {Number(c.goal_co2_kg).toFixed(0)} kg CO₂ reduced</span>
-                  <span className="inline-flex items-center gap-1"><Users className="size-3" />{participants}</span>
+                  <span>
+                    {totalKg.toFixed(0)} / {Number(c.goal_co2_kg).toFixed(0)} kg CO₂ reduced
+                  </span>
+                  <span className="inline-flex items-center gap-1">
+                    <Users className="size-3" />
+                    {participants}
+                  </span>
                 </div>
-                {joined
-                  ? <Button variant="outline" className="w-full" onClick={() => leave(c.id)}>Leave challenge</Button>
-                  : <Button className="w-full" onClick={() => join(c.id)} disabled={!user}>Join challenge</Button>}
+                {joined ? (
+                  <Button variant="outline" className="w-full" onClick={() => leave(c.id)}>
+                    Leave challenge
+                  </Button>
+                ) : (
+                  <Button className="w-full" onClick={() => join(c.id)} disabled={!user}>
+                    Join challenge
+                  </Button>
+                )}
               </CardContent>
             </Card>
           );
         })}
         {data?.challenges.length === 0 && (
-          <Card><CardContent className="py-10 text-center text-muted-foreground">No active challenges yet.</CardContent></Card>
+          <Card>
+            <CardContent className="py-10 text-center text-muted-foreground">
+              No active challenges yet.
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>

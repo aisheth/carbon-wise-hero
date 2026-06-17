@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { generateWeeklyMissions, weekStart, isoDate, MISSION_LIBRARY } from "../../src/lib/missions";
+import {
+  generateWeeklyMissions,
+  weekStart,
+  isoDate,
+  MISSION_LIBRARY,
+} from "../../src/lib/missions";
 
 describe("weekStart", () => {
   it("returns a Monday", () => {
@@ -7,7 +12,9 @@ describe("weekStart", () => {
     expect(d.getUTCDay()).toBe(1);
   });
   it("returns the same date when called twice in the same week", () => {
-    expect(isoDate(weekStart(new Date("2026-06-15")))).toBe(isoDate(weekStart(new Date("2026-06-19"))));
+    expect(isoDate(weekStart(new Date("2026-06-15")))).toBe(
+      isoDate(weekStart(new Date("2026-06-19"))),
+    );
   });
 });
 

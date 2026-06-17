@@ -22,10 +22,12 @@ describe("parseReceiptText", () => {
 
 describe("totalReceiptImpact", () => {
   it("sums and rounds to 1 decimal", () => {
-    expect(totalReceiptImpact([
-      { name: "Beef", category: "food", co2Kg: 27 },
-      { name: "Milk", category: "food", co2Kg: 3 },
-    ])).toBe(30);
+    expect(
+      totalReceiptImpact([
+        { name: "Beef", category: "food", co2Kg: 27 },
+        { name: "Milk", category: "food", co2Kg: 3 },
+      ]),
+    ).toBe(30);
   });
   it("returns 0 for empty list", () => {
     expect(totalReceiptImpact([])).toBe(0);

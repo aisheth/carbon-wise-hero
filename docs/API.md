@@ -10,10 +10,10 @@ Carbon Coach has two server surfaces:
 
 Streaming AI Coach endpoint.
 
-| Header | Required | Notes |
-|---|---|---|
-| `Content-Type: application/json` | yes | |
-| `Authorization: Bearer <session token>` | yes | enforced by the route |
+| Header                                  | Required | Notes                 |
+| --------------------------------------- | -------- | --------------------- |
+| `Content-Type: application/json`        | yes      |                       |
+| `Authorization: Bearer <session token>` | yes      | enforced by the route |
 
 ### Request body
 
@@ -35,10 +35,10 @@ Server-Sent Events. Each chunk is `{ "delta": "..." }`; the stream ends with
 
 ## Database RPCs
 
-| RPC | Args | Returns | Access |
-|---|---|---|---|
+| RPC                           | Args           | Returns                                                          | Access          |
+| ----------------------------- | -------------- | ---------------------------------------------------------------- | --------------- |
 | `get_leaderboard(_limit int)` | `_limit ≤ 100` | top users — id, display_name, avatar_url, points, current_streak | `authenticated` |
-| `get_challenge_progress()` | – | `(challenge_id, participant_count, total_kg)` aggregates | `authenticated` |
+| `get_challenge_progress()`    | –              | `(challenge_id, participant_count, total_kg)` aggregates         | `authenticated` |
 
 Call from the client:
 

@@ -6,7 +6,19 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  Legend,
+} from "recharts";
 import { ArrowRight, Flame, Leaf, TrendingDown, Trophy } from "lucide-react";
 import { format, subMonths } from "date-fns";
 import { ImpactCard } from "@/components/impact-card";
@@ -68,9 +80,7 @@ function DashboardPage() {
 
   // Re-derive recommendations from the persisted inputs so the dashboard
   // can show the AI-prioritized "Top 3" without an extra round-trip.
-  const reassessed = latest.inputs
-    ? assess(latest.inputs as unknown as AssessmentInputs)
-    : null;
+  const reassessed = latest.inputs ? assess(latest.inputs as unknown as AssessmentInputs) : null;
   // CO₂ avoided vs. global per-capita baseline (~830 kg/mo), floored at 0.
   const co2Avoided = Math.max(0, 830 - Number(latest.total_kg));
 
@@ -78,20 +88,41 @@ function DashboardPage() {
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm text-muted-foreground">Hi {data?.profile?.display_name ?? "there"} 👋</p>
+          <p className="text-sm text-muted-foreground">
+            Hi {data?.profile?.display_name ?? "there"} 👋
+          </p>
           <h1 className="text-3xl font-semibold">Your carbon dashboard</h1>
         </div>
-        <Link to="/assessment"><Button variant="outline">Retake assessment</Button></Link>
+        <Link to="/assessment">
+          <Button variant="outline">Retake assessment</Button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <StatCard icon={Leaf} label="Monthly footprint" value={`${Number(latest.total_kg).toFixed(0)} kg CO₂e`} hint="kilograms per month" />
-        <StatCard icon={TrendingDown} label="Eco score" value={`${latest.score}/100`} hint={scoreLabel(latest.score)}>
+        <StatCard
+          icon={Leaf}
+          label="Monthly footprint"
+          value={`${Number(latest.total_kg).toFixed(0)} kg CO₂e`}
+          hint="kilograms per month"
+        />
+        <StatCard
+          icon={TrendingDown}
+          label="Eco score"
+          value={`${latest.score}/100`}
+          hint={scoreLabel(latest.score)}
+        >
           <Progress value={latest.score} className="mt-3" />
         </StatCard>
-        <StatCard icon={Flame} label="Streak" value={`${data?.profile?.current_streak ?? 0} days`} hint={`${data?.profile?.points ?? 0} eco points`}>
+        <StatCard
+          icon={Flame}
+          label="Streak"
+          value={`${data?.profile?.current_streak ?? 0} days`}
+          hint={`${data?.profile?.points ?? 0} eco points`}
+        >
           <Trophy className="size-4 text-warning inline-block mr-1" />
-          <span className="text-xs text-muted-foreground">Longest: {data?.profile?.longest_streak ?? 0} days</span>
+          <span className="text-xs text-muted-foreground">
+            Longest: {data?.profile?.longest_streak ?? 0} days
+          </span>
         </StatCard>
       </div>
 
@@ -101,7 +132,9 @@ function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <Card className="lg:col-span-3">
-          <CardHeader><CardTitle>Trend</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle>Trend</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="h-72">
               <ResponsiveContainer>
@@ -118,13 +151,24 @@ function DashboardPage() {
         </Card>
 
         <Card className="lg:col-span-2">
-          <CardHeader><CardTitle>Where it comes from</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle>Where it comes from</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="h-72">
               <ResponsiveContainer>
                 <PieChart>
-                  <Pie data={breakdown} dataKey="value" nameKey="name" innerRadius={50} outerRadius={90} paddingAngle={2}>
-                    {breakdown.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
+                  <Pie
+                    data={breakdown}
+                    dataKey="value"
+                    nameKey="name"
+                    innerRadius={50}
+                    outerRadius={90}
+                    paddingAngle={2}
+                  >
+                    {breakdown.map((_, i) => (
+                      <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+                    ))}
                   </Pie>
                   <Tooltip />
                   <Legend />
@@ -132,7 +176,8 @@ function DashboardPage() {
               </ResponsiveContainer>
             </div>
             <p className="text-sm text-muted-foreground mt-2">
-              Biggest source: <span className="text-foreground font-medium">{biggest.name}</span> ({biggest.value.toFixed(0)} kg)
+              Biggest source: <span className="text-foreground font-medium">{biggest.name}</span> (
+              {biggest.value.toFixed(0)} kg)
             </p>
           </CardContent>
         </Card>
@@ -141,18 +186,32 @@ function DashboardPage() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>This week's missions</CardTitle>
-          <Link to="/missions"><Button variant="ghost" size="sm" className="gap-1">All missions <ArrowRight className="size-4" /></Button></Link>
+          <Link to="/missions">
+            <Button variant="ghost" size="sm" className="gap-1">
+              All missions <ArrowRight className="size-4" />
+            </Button>
+          </Link>
         </CardHeader>
         <CardContent className="grid sm:grid-cols-3 gap-3">
-          {data?.missions.length ? data.missions.map((m) => (
-            <div key={m.id} className="rounded-lg border border-border p-4">
-              <Badge variant="secondary" className="mb-2 capitalize">{m.category}</Badge>
-              <h4 className="font-medium">{m.title}</h4>
-              <p className="text-xs text-muted-foreground mt-1">Save ~{Number(m.estimated_co2_kg)} kg CO₂</p>
-            </div>
-          )) : (
+          {data?.missions.length ? (
+            data.missions.map((m) => (
+              <div key={m.id} className="rounded-lg border border-border p-4">
+                <Badge variant="secondary" className="mb-2 capitalize">
+                  {m.category}
+                </Badge>
+                <h4 className="font-medium">{m.title}</h4>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Save ~{Number(m.estimated_co2_kg)} kg CO₂
+                </p>
+              </div>
+            ))
+          ) : (
             <div className="sm:col-span-3 text-sm text-muted-foreground">
-              No active missions. <Link to="/missions" className="text-primary underline">Generate this week's set</Link>.
+              No active missions.{" "}
+              <Link to="/missions" className="text-primary underline">
+                Generate this week's set
+              </Link>
+              .
             </div>
           )}
         </CardContent>
@@ -161,7 +220,19 @@ function DashboardPage() {
   );
 }
 
-function StatCard({ icon: Icon, label, value, hint, children }: { icon: typeof Leaf; label: string; value: string; hint?: string; children?: React.ReactNode }) {
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+  hint,
+  children,
+}: {
+  icon: typeof Leaf;
+  label: string;
+  value: string;
+  hint?: string;
+  children?: React.ReactNode;
+}) {
   return (
     <Card>
       <CardContent className="pt-6">
@@ -190,8 +261,12 @@ function EmptyState() {
         <Leaf className="size-7 text-primary-foreground" />
       </div>
       <h2 className="text-2xl font-display font-semibold">Welcome to Carbon Coach</h2>
-      <p className="text-muted-foreground mt-2">Take the 2-minute assessment to see your monthly footprint and get a personalized plan.</p>
-      <Link to="/assessment"><Button className="mt-6">Start assessment</Button></Link>
+      <p className="text-muted-foreground mt-2">
+        Take the 2-minute assessment to see your monthly footprint and get a personalized plan.
+      </p>
+      <Link to="/assessment">
+        <Button className="mt-6">Start assessment</Button>
+      </Link>
     </div>
   );
 }
