@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { generateWeeklyMissions, isoDate, weekStart } from "@/lib/missions";
 import { toast } from "sonner";
-import { CheckCircle2, Target } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Target, Upload } from "lucide-react";
+import { useRef } from "react";
 
 export const Route = createFileRoute("/_authenticated/missions")({
   head: () => ({ meta: [{ title: "Weekly Missions — Carbon Coach" }] }),
