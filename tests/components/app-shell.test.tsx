@@ -75,10 +75,10 @@ describe("AppShell", () => {
     renderShell();
     const buttons = screen.getAllByRole("button", { name: /sign out/i });
     fireEvent.click(buttons[0]);
-    // Allow promise chain to flush
-    await Promise.resolve();
-    await Promise.resolve();
-    expect(signOutMock).toHaveBeenCalled();
-    expect(navigateMock).toHaveBeenCalledWith({ to: "/auth", replace: true });
+    await waitFor(() => expect(signOutMock).toHaveBeenCalled());
+    await waitFor(() =>
+      expect(navigateMock).toHaveBeenCalledWith({ to: "/auth", replace: true }),
+    );
   });
 });
+
