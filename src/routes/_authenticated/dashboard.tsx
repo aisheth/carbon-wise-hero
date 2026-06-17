@@ -66,6 +66,14 @@ function DashboardPage() {
   }
   const biggest = [...breakdown].sort((a, b) => b.value - a.value)[0];
 
+  // Re-derive recommendations from the persisted inputs so the dashboard
+  // can show the AI-prioritized "Top 3" without an extra round-trip.
+  const reassessed = latest.inputs
+    ? assess(latest.inputs as unknown as AssessmentInputs)
+    : null;
+  // CO₂ avoided vs. global per-capita baseline (~830 kg/mo), floored at 0.
+  const co2Avoided = Math.max(0, 830 - Number(latest.total_kg));
+
   return (
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
