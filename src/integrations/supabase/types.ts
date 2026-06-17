@@ -80,6 +80,71 @@ export type Database = {
         }
         Relationships: []
       }
+      challenge_participants: {
+        Row: {
+          challenge_id: string
+          contributed_kg: number
+          joined_at: string
+          user_id: string
+        }
+        Insert: {
+          challenge_id: string
+          contributed_kg?: number
+          joined_at?: string
+          user_id: string
+        }
+        Update: {
+          challenge_id?: string
+          contributed_kg?: number
+          joined_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_participants_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenges: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          ends_at: string
+          goal_co2_kg: number
+          id: string
+          name: string
+          slug: string
+          starts_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description: string
+          ends_at?: string
+          goal_co2_kg?: number
+          id?: string
+          name: string
+          slug: string
+          starts_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          ends_at?: string
+          goal_co2_kg?: number
+          id?: string
+          name?: string
+          slug?: string
+          starts_at?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           content: string
@@ -176,8 +241,11 @@ export type Database = {
           estimated_co2_kg: number
           id: string
           points: number
+          proof_url: string | null
           title: string
           user_id: string
+          verification_status: string
+          verified_at: string | null
           week_start: string
         }
         Insert: {
@@ -189,8 +257,11 @@ export type Database = {
           estimated_co2_kg?: number
           id?: string
           points?: number
+          proof_url?: string | null
           title: string
           user_id: string
+          verification_status?: string
+          verified_at?: string | null
           week_start: string
         }
         Update: {
@@ -202,8 +273,11 @@ export type Database = {
           estimated_co2_kg?: number
           id?: string
           points?: number
+          proof_url?: string | null
           title?: string
           user_id?: string
+          verification_status?: string
+          verified_at?: string | null
           week_start?: string
         }
         Relationships: []
@@ -305,6 +379,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_challenge_progress: {
+        Args: never
+        Returns: {
+          challenge_id: string
+          participant_count: number
+          total_kg: number
+        }[]
+      }
       get_leaderboard: {
         Args: { _limit?: number }
         Returns: {

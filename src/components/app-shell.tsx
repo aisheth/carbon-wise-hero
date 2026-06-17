@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Leaf, LayoutDashboard, MessageCircle, Target, Calculator, ScanLine, Trophy, ClipboardList, LogOut, Menu, X } from "lucide-react";
+import { Leaf, LayoutDashboard, MessageCircle, Target, Calculator, ScanLine, Trophy, ClipboardList, Users, LogOut, Menu, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
@@ -11,6 +11,7 @@ const nav = [
   { to: "/assessment", label: "Assessment", icon: ClipboardList },
   { to: "/coach", label: "AI Coach", icon: MessageCircle },
   { to: "/missions", label: "Missions", icon: Target },
+  { to: "/challenges", label: "Challenges", icon: Users },
   { to: "/simulator", label: "Simulator", icon: Calculator },
   { to: "/scanner", label: "Receipt Scanner", icon: ScanLine },
   { to: "/leaderboard", label: "Leaderboard", icon: Trophy },

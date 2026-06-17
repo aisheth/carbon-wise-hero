@@ -7,8 +7,12 @@ AI-powered carbon footprint tracking, weekly eco-missions, and a personal sustai
 - 🔐 **Auth** — Email + Google (managed by Lovable Cloud)
 - 📋 **Carbon Assessment** — 5 categories (transport, electricity, food, shopping, waste)
 - 📊 **Dashboard** — total footprint, monthly trend, category pie, biggest sources
+- 🌍 **Impact Dashboard** — translates CO₂ avoided into trees, water, and energy equivalents
+- ✨ **Top 3 AI Recommendations** — ranked by estimated carbon reduction
 - 🤖 **AI Coach** — streaming chat powered by Lovable AI (Google Gemini)
 - 🎯 **Weekly Eco Missions** — auto-generated, ranked by your worst categories
+- 🛡️ **Verified Actions** — upload photo proof for completed missions (pending/approved/rejected)
+- 🤝 **Community Challenges** — join collective goals and watch shared progress
 - 🧪 **Carbon Savings Simulator** — live "what-if" sliders
 - 🧾 **Receipt Scanner** — paste OCR text, get item-level CO₂ estimates
 - 🏆 **Gamification** — points, badges, streaks, leaderboard
@@ -131,6 +135,16 @@ Then create `e2e/` specs that sign up a throwaway user, take the assessment, and
 - Color tokens defined in `oklch` for predictable contrast in light/dark.
 - `h-dvh` used for full-height layouts to respect mobile viewports.
 
+## Documentation
+
+Deep-dive docs live under [`docs/`](./docs):
+
+- [Architecture](./docs/ARCHITECTURE.md) — layering, request lifecycle, mermaid diagram
+- [Database schema](./docs/DATABASE.md) — full ER diagram and RLS surface
+- [Security](./docs/SECURITY.md) — auth, RLS, storage, secret handling
+- [Testing](./docs/TESTING.md) — layers, coverage thresholds, CI
+- [API](./docs/API.md) — `/api/chat` endpoint and database RPCs
+
 ## Roadmap
 
 - Real image OCR for receipts (Google Vision or Tesseract.js)
@@ -138,3 +152,4 @@ Then create `e2e/` specs that sign up a throwaway user, take the assessment, and
 - Real-time leaderboard updates via Lovable Cloud Realtime
 - Apple sign-in
 - Push notifications for mission reminders
+- Admin review queue for verified-action proofs

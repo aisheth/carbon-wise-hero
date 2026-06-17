@@ -9,6 +9,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from "recharts";
 import { ArrowRight, Flame, Leaf, TrendingDown, Trophy } from "lucide-react";
 import { format, subMonths } from "date-fns";
+import { ImpactCard } from "@/components/impact-card";
+import { TopRecommendations } from "@/components/top-recommendations";
+import { assess, type AssessmentInputs } from "@/lib/carbon";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — Carbon Coach" }] }),
@@ -63,6 +66,14 @@ function DashboardPage() {
   }
   const biggest = [...breakdown].sort((a, b) => b.value - a.value)[0];
 
+  // Re-derive recommendations from the persisted inputs so the dashboard
+  // can show the AI-prioritized "Top 3" without an extra round-trip.
+  const reassessed = latest.inputs
+    ? assess(latest.inputs as unknown as AssessmentInputs)
+    : null;
+  // CO₂ avoided vs. global per-capita baseline (~830 kg/mo), floored at 0.
+  const co2Avoided = Math.max(0, 830 - Number(latest.total_kg));
+
   return (
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -83,6 +94,10 @@ function DashboardPage() {
           <span className="text-xs text-muted-foreground">Longest: {data?.profile?.longest_streak ?? 0} days</span>
         </StatCard>
       </div>
+
+      <ImpactCard co2Kg={co2Avoided} />
+
+      {reassessed && <TopRecommendations recommendations={reassessed.recommendations} limit={3} />}
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <Card className="lg:col-span-3">
