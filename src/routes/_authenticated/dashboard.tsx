@@ -95,6 +95,10 @@ function DashboardPage() {
         </StatCard>
       </div>
 
+      <ImpactCard co2Kg={co2Avoided} />
+
+      {reassessed && <TopRecommendations recommendations={reassessed.recommendations} limit={3} />}
+
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <Card className="lg:col-span-3">
           <CardHeader><CardTitle>Trend</CardTitle></CardHeader>
