@@ -7,7 +7,7 @@ const locationState = vi.hoisted(() => ({ pathname: "/dashboard" }));
 const signOutMock = vi.hoisted(() => vi.fn().mockResolvedValue({ error: null }));
 
 vi.mock("@tanstack/react-router", () => ({
-  Link: ({ to, children, className, ...rest }: any) => (
+  Link: ({ to, children, className, ...rest }: Record<string, unknown> & { to: string; children: React.ReactNode; className?: string }) => (
     <a href={to} className={className} {...rest}>
       {children}
     </a>
