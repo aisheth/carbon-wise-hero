@@ -2,9 +2,9 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const navigateMock = vi.fn();
-const locationState = { pathname: "/dashboard" };
-const signOutMock = vi.fn().mockResolvedValue({ error: null });
+const navigateMock = vi.hoisted(() => vi.fn());
+const locationState = vi.hoisted(() => ({ pathname: "/dashboard" }));
+const signOutMock = vi.hoisted(() => vi.fn().mockResolvedValue({ error: null }));
 
 vi.mock("@tanstack/react-router", () => ({
   Link: ({ to, children, className, ...rest }: any) => (
@@ -19,6 +19,7 @@ vi.mock("@tanstack/react-router", () => ({
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: { auth: { signOut: signOutMock } },
 }));
+
 
 import { AppShell } from "../../src/components/app-shell";
 
