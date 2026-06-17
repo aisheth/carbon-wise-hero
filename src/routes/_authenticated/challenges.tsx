@@ -46,10 +46,10 @@ function ChallengesPage() {
           : Promise.resolve({ data: [] as Array<{ challenge_id: string; contributed_kg: number }> }),
       ]);
       const progressByChallenge = new Map<string, ProgressRow>(
-        ((progress ?? []) as ProgressRow[]).map((p) => [p.challenge_id, p]),
+        (((progress ?? []) as unknown) as ProgressRow[]).map((p) => [p.challenge_id, p]),
       );
       const joinedIds = new Set(
-        ((mine ?? []) as Array<{ challenge_id: string }>).map((m) => m.challenge_id),
+        (((mine ?? []) as unknown) as Array<{ challenge_id: string }>).map((m) => m.challenge_id),
       );
       return { challenges: (challenges ?? []) as ChallengeRow[], progressByChallenge, joinedIds };
     },
