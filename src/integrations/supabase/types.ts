@@ -1,523 +1,531 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5";
-  };
+    PostgrestVersion: "14.5"
+  }
   public: {
     Tables: {
       assessments: {
         Row: {
-          created_at: string;
-          electricity_kg: number;
-          food_kg: number;
-          id: string;
-          inputs: Json;
-          score: number;
-          shopping_kg: number;
-          total_kg: number;
-          transport_kg: number;
-          user_id: string;
-          waste_kg: number;
-        };
+          created_at: string
+          electricity_kg: number
+          food_kg: number
+          id: string
+          inputs: Json
+          score: number
+          shopping_kg: number
+          total_kg: number
+          transport_kg: number
+          user_id: string
+          waste_kg: number
+        }
         Insert: {
-          created_at?: string;
-          electricity_kg?: number;
-          food_kg?: number;
-          id?: string;
-          inputs: Json;
-          score?: number;
-          shopping_kg?: number;
-          total_kg?: number;
-          transport_kg?: number;
-          user_id: string;
-          waste_kg?: number;
-        };
+          created_at?: string
+          electricity_kg?: number
+          food_kg?: number
+          id?: string
+          inputs: Json
+          score?: number
+          shopping_kg?: number
+          total_kg?: number
+          transport_kg?: number
+          user_id: string
+          waste_kg?: number
+        }
         Update: {
-          created_at?: string;
-          electricity_kg?: number;
-          food_kg?: number;
-          id?: string;
-          inputs?: Json;
-          score?: number;
-          shopping_kg?: number;
-          total_kg?: number;
-          transport_kg?: number;
-          user_id?: string;
-          waste_kg?: number;
-        };
-        Relationships: [];
-      };
+          created_at?: string
+          electricity_kg?: number
+          food_kg?: number
+          id?: string
+          inputs?: Json
+          score?: number
+          shopping_kg?: number
+          total_kg?: number
+          transport_kg?: number
+          user_id?: string
+          waste_kg?: number
+        }
+        Relationships: []
+      }
       badges: {
         Row: {
-          description: string;
-          icon: string;
-          id: string;
-          name: string;
-          threshold: number;
-        };
+          description: string
+          icon: string
+          id: string
+          name: string
+          threshold: number
+        }
         Insert: {
-          description: string;
-          icon: string;
-          id: string;
-          name: string;
-          threshold?: number;
-        };
+          description: string
+          icon: string
+          id: string
+          name: string
+          threshold?: number
+        }
         Update: {
-          description?: string;
-          icon?: string;
-          id?: string;
-          name?: string;
-          threshold?: number;
-        };
-        Relationships: [];
-      };
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          threshold?: number
+        }
+        Relationships: []
+      }
       challenge_participants: {
         Row: {
-          challenge_id: string;
-          contributed_kg: number;
-          joined_at: string;
-          user_id: string;
-        };
+          challenge_id: string
+          contributed_kg: number
+          joined_at: string
+          user_id: string
+        }
         Insert: {
-          challenge_id: string;
-          contributed_kg?: number;
-          joined_at?: string;
-          user_id: string;
-        };
+          challenge_id: string
+          contributed_kg?: number
+          joined_at?: string
+          user_id: string
+        }
         Update: {
-          challenge_id?: string;
-          contributed_kg?: number;
-          joined_at?: string;
-          user_id?: string;
-        };
+          challenge_id?: string
+          contributed_kg?: number
+          joined_at?: string
+          user_id?: string
+        }
         Relationships: [
           {
-            foreignKeyName: "challenge_participants_challenge_id_fkey";
-            columns: ["challenge_id"];
-            isOneToOne: false;
-            referencedRelation: "challenges";
-            referencedColumns: ["id"];
+            foreignKeyName: "challenge_participants_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
           },
-        ];
-      };
+        ]
+      }
       challenges: {
         Row: {
-          category: string;
-          created_at: string;
-          description: string;
-          ends_at: string;
-          goal_co2_kg: number;
-          id: string;
-          name: string;
-          slug: string;
-          starts_at: string;
-        };
+          category: string
+          created_at: string
+          description: string
+          ends_at: string
+          goal_co2_kg: number
+          id: string
+          name: string
+          slug: string
+          starts_at: string
+        }
         Insert: {
-          category: string;
-          created_at?: string;
-          description: string;
-          ends_at?: string;
-          goal_co2_kg?: number;
-          id?: string;
-          name: string;
-          slug: string;
-          starts_at?: string;
-        };
+          category: string
+          created_at?: string
+          description: string
+          ends_at?: string
+          goal_co2_kg?: number
+          id?: string
+          name: string
+          slug: string
+          starts_at?: string
+        }
         Update: {
-          category?: string;
-          created_at?: string;
-          description?: string;
-          ends_at?: string;
-          goal_co2_kg?: number;
-          id?: string;
-          name?: string;
-          slug?: string;
-          starts_at?: string;
-        };
-        Relationships: [];
-      };
+          category?: string
+          created_at?: string
+          description?: string
+          ends_at?: string
+          goal_co2_kg?: number
+          id?: string
+          name?: string
+          slug?: string
+          starts_at?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
-          content: string;
-          created_at: string;
-          id: string;
-          role: string;
-          thread_id: string;
-          user_id: string;
-        };
+          content: string
+          created_at: string
+          id: string
+          role: string
+          thread_id: string
+          user_id: string
+        }
         Insert: {
-          content: string;
-          created_at?: string;
-          id?: string;
-          role: string;
-          thread_id: string;
-          user_id: string;
-        };
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          thread_id: string
+          user_id: string
+        }
         Update: {
-          content?: string;
-          created_at?: string;
-          id?: string;
-          role?: string;
-          thread_id?: string;
-          user_id?: string;
-        };
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          thread_id?: string
+          user_id?: string
+        }
         Relationships: [
           {
-            foreignKeyName: "chat_messages_thread_id_fkey";
-            columns: ["thread_id"];
-            isOneToOne: false;
-            referencedRelation: "chat_threads";
-            referencedColumns: ["id"];
+            foreignKeyName: "chat_messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "chat_threads"
+            referencedColumns: ["id"]
           },
-        ];
-      };
+        ]
+      }
       chat_threads: {
         Row: {
-          created_at: string;
-          id: string;
-          title: string;
-          updated_at: string;
-          user_id: string;
-        };
+          created_at: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
         Insert: {
-          created_at?: string;
-          id?: string;
-          title?: string;
-          updated_at?: string;
-          user_id: string;
-        };
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
         Update: {
-          created_at?: string;
-          id?: string;
-          title?: string;
-          updated_at?: string;
-          user_id?: string;
-        };
-        Relationships: [];
-      };
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       emissions_log: {
         Row: {
-          category: string | null;
-          created_at: string;
-          id: string;
-          month: string;
-          total_kg: number;
-          user_id: string;
-        };
+          category: string | null
+          created_at: string
+          id: string
+          month: string
+          total_kg: number
+          user_id: string
+        }
         Insert: {
-          category?: string | null;
-          created_at?: string;
-          id?: string;
-          month: string;
-          total_kg: number;
-          user_id: string;
-        };
+          category?: string | null
+          created_at?: string
+          id?: string
+          month: string
+          total_kg: number
+          user_id: string
+        }
         Update: {
-          category?: string | null;
-          created_at?: string;
-          id?: string;
-          month?: string;
-          total_kg?: number;
-          user_id?: string;
-        };
-        Relationships: [];
-      };
+          category?: string | null
+          created_at?: string
+          id?: string
+          month?: string
+          total_kg?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       missions: {
         Row: {
-          category: string;
-          completed: boolean;
-          completed_at: string | null;
-          created_at: string;
-          description: string | null;
-          estimated_co2_kg: number;
-          id: string;
-          points: number;
-          proof_url: string | null;
-          title: string;
-          user_id: string;
-          verification_status: string;
-          verified_at: string | null;
-          week_start: string;
-        };
+          category: string
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          estimated_co2_kg: number
+          id: string
+          points: number
+          proof_url: string | null
+          title: string
+          user_id: string
+          verification_status: string
+          verified_at: string | null
+          week_start: string
+        }
         Insert: {
-          category: string;
-          completed?: boolean;
-          completed_at?: string | null;
-          created_at?: string;
-          description?: string | null;
-          estimated_co2_kg?: number;
-          id?: string;
-          points?: number;
-          proof_url?: string | null;
-          title: string;
-          user_id: string;
-          verification_status?: string;
-          verified_at?: string | null;
-          week_start: string;
-        };
+          category: string
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          estimated_co2_kg?: number
+          id?: string
+          points?: number
+          proof_url?: string | null
+          title: string
+          user_id: string
+          verification_status?: string
+          verified_at?: string | null
+          week_start: string
+        }
         Update: {
-          category?: string;
-          completed?: boolean;
-          completed_at?: string | null;
-          created_at?: string;
-          description?: string | null;
-          estimated_co2_kg?: number;
-          id?: string;
-          points?: number;
-          proof_url?: string | null;
-          title?: string;
-          user_id?: string;
-          verification_status?: string;
-          verified_at?: string | null;
-          week_start?: string;
-        };
-        Relationships: [];
-      };
+          category?: string
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          estimated_co2_kg?: number
+          id?: string
+          points?: number
+          proof_url?: string | null
+          title?: string
+          user_id?: string
+          verification_status?: string
+          verified_at?: string | null
+          week_start?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
-          avatar_url: string | null;
-          created_at: string;
-          current_streak: number;
-          display_name: string | null;
-          id: string;
-          last_active_date: string | null;
-          longest_streak: number;
-          points: number;
-          updated_at: string;
-        };
+          avatar_url: string | null
+          created_at: string
+          current_streak: number
+          display_name: string | null
+          id: string
+          last_active_date: string | null
+          longest_streak: number
+          points: number
+          updated_at: string
+        }
         Insert: {
-          avatar_url?: string | null;
-          created_at?: string;
-          current_streak?: number;
-          display_name?: string | null;
-          id: string;
-          last_active_date?: string | null;
-          longest_streak?: number;
-          points?: number;
-          updated_at?: string;
-        };
+          avatar_url?: string | null
+          created_at?: string
+          current_streak?: number
+          display_name?: string | null
+          id: string
+          last_active_date?: string | null
+          longest_streak?: number
+          points?: number
+          updated_at?: string
+        }
         Update: {
-          avatar_url?: string | null;
-          created_at?: string;
-          current_streak?: number;
-          display_name?: string | null;
-          id?: string;
-          last_active_date?: string | null;
-          longest_streak?: number;
-          points?: number;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
+          avatar_url?: string | null
+          created_at?: string
+          current_streak?: number
+          display_name?: string | null
+          id?: string
+          last_active_date?: string | null
+          longest_streak?: number
+          points?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       receipts: {
         Row: {
-          created_at: string;
-          estimated_co2_kg: number;
-          id: string;
-          image_url: string | null;
-          items: Json | null;
-          ocr_text: string | null;
-          user_id: string;
-        };
+          created_at: string
+          estimated_co2_kg: number
+          id: string
+          image_url: string | null
+          items: Json | null
+          ocr_text: string | null
+          user_id: string
+        }
         Insert: {
-          created_at?: string;
-          estimated_co2_kg?: number;
-          id?: string;
-          image_url?: string | null;
-          items?: Json | null;
-          ocr_text?: string | null;
-          user_id: string;
-        };
+          created_at?: string
+          estimated_co2_kg?: number
+          id?: string
+          image_url?: string | null
+          items?: Json | null
+          ocr_text?: string | null
+          user_id: string
+        }
         Update: {
-          created_at?: string;
-          estimated_co2_kg?: number;
-          id?: string;
-          image_url?: string | null;
-          items?: Json | null;
-          ocr_text?: string | null;
-          user_id?: string;
-        };
-        Relationships: [];
-      };
+          created_at?: string
+          estimated_co2_kg?: number
+          id?: string
+          image_url?: string | null
+          items?: Json | null
+          ocr_text?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_badges: {
         Row: {
-          badge_id: string;
-          earned_at: string;
-          user_id: string;
-        };
+          badge_id: string
+          earned_at: string
+          user_id: string
+        }
         Insert: {
-          badge_id: string;
-          earned_at?: string;
-          user_id: string;
-        };
+          badge_id: string
+          earned_at?: string
+          user_id: string
+        }
         Update: {
-          badge_id?: string;
-          earned_at?: string;
-          user_id?: string;
-        };
+          badge_id?: string
+          earned_at?: string
+          user_id?: string
+        }
         Relationships: [
           {
-            foreignKeyName: "user_badges_badge_id_fkey";
-            columns: ["badge_id"];
-            isOneToOne: false;
-            referencedRelation: "badges";
-            referencedColumns: ["id"];
+            foreignKeyName: "user_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
           },
-        ];
-      };
-    };
+        ]
+      }
+    }
     Views: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Functions: {
       get_challenge_progress: {
-        Args: never;
+        Args: never
         Returns: {
-          challenge_id: string;
-          participant_count: number;
-          total_kg: number;
-        }[];
-      };
+          challenge_id: string
+          participant_count: number
+          total_kg: number
+        }[]
+      }
       get_leaderboard: {
-        Args: { _limit?: number };
+        Args: { _limit?: number }
         Returns: {
-          avatar_url: string;
-          current_streak: number;
-          display_name: string;
-          id: string;
-          points: number;
-        }[];
-      };
-    };
+          avatar_url: string
+          current_streak: number
+          display_name: string
+          id: string
+          points: number
+        }[]
+      }
+    }
     Enums: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-};
+      [_ in never]: never
+    }
+  }
+}
 
-type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">];
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
       DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R;
+      Row: infer R
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] & DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R;
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
       }
       ? R
       : never
-    : never;
+    : never
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I;
+      Insert: infer I
     }
     ? I
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I;
+        Insert: infer I
       }
       ? I
       : never
-    : never;
+    : never
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U;
+      Update: infer U
     }
     ? U
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U;
+        Update: infer U
       }
       ? U
       : never
-    : never;
+    : never
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never;
+    : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never;
+    : never
 
 export const Constants = {
   public: {
     Enums: {},
   },
-} as const;
+} as const
