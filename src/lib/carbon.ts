@@ -133,6 +133,13 @@ export function calculateScore(totalKgPerMonth: number): number {
   return Math.round(clamp(score, 0, 100));
 }
 
+/**
+ * Generate up to 5 tailored, high-impact eco-action recommendations.
+ *
+ * Pure function: inspects the assessed category breakdown plus the original
+ * inputs and emits opinionated suggestions with an `estimatedSavingKg`
+ * heuristic. Results are sorted descending by estimated saving.
+ */
 export function generateRecommendations(
   breakdown: CategoryBreakdown,
   inputs: AssessmentInputs,
@@ -190,6 +197,10 @@ export function generateRecommendations(
   return recs.sort((a, b) => b.estimatedSavingKg - a.estimatedSavingKg).slice(0, 5);
 }
 
+/**
+ * End-to-end assessment: combines per-category emissions, total, score,
+ * and ranked recommendations into a single `AssessmentResult`. Pure.
+ */
 export function assess(inputs: AssessmentInputs): AssessmentResult {
   const breakdown = calculateEmissions(inputs);
   const total = round1(
